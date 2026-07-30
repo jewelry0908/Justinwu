@@ -173,7 +173,7 @@
 
     .work { min-height: 100dvh; padding: var(--section-top) 0 40px; display: grid; grid-template-rows: auto minmax(0,1fr) auto auto; gap: 16px; }
     .work__title { padding: 0 var(--page-gutter); }
-    .work-stage { position: relative; align-self: center; height: clamp(410px, 34vw, 560px); min-height: 0; margin: 0; overflow: hidden; touch-action: pan-y; cursor: none; }
+    .work-stage { position: relative; align-self: center; height: clamp(450px, 36vw, 600px); min-height: 0; margin: 0; overflow: hidden; touch-action: pan-y; cursor: none; }
     .work-stage.is-dragging { cursor: none; }
     .project-card {
       position: absolute;
@@ -637,23 +637,23 @@
     .project-card__summary {
       display: block;
       max-width: 35ch;
-      margin: 18px 0 0;
+      margin: 15px 0 0;
       font-size: clamp(14px, 1.16vw, 17px);
-      line-height: 1.38;
+      line-height: 1.34;
       text-wrap: pretty;
     }
-    .project-card__summary--zh { margin-top: 5px; color: rgba(248,248,245,.8); }
+    .project-card__summary--zh { margin-top: 4px; color: rgba(248,248,245,.8); }
     .project-card__tag {
       display: block;
-      margin-top: 17px;
-      padding-top: 14px;
+      margin-top: 12px;
+      padding-top: 10px;
       border-top: 1px solid rgba(248,248,245,.42);
       color: var(--paper);
     }
-    .project-card__tag--zh { margin-top: 4px; padding-top: 0; border-top: 0; color: rgba(248,248,245,.72); }
-    .project-card__meta { display: block; max-width: 38ch; line-height: 1.35; }
-    .project-card__meta--en { margin-top: 9px; color: var(--paper); }
-    .project-card__meta--zh { margin-top: 4px; color: var(--muted); }
+    .project-card__tag--zh { margin-top: 3px; padding-top: 0; border-top: 0; color: rgba(248,248,245,.72); }
+    .project-card__meta { display: block; max-width: 100%; line-height: 1.32; }
+    .project-card__meta--en { margin-top: 6px; color: var(--paper); }
+    .project-card__meta--zh { margin-top: 3px; color: var(--muted); }
     .project-card__bottom .project-card__open { margin: 0; }
     .project-card:not(.is-active) .project-card__top { opacity: .26; }
     .project-card:not(.is-active) .project-card__bottom { opacity: 0; transform: translateY(12px); }
@@ -900,7 +900,7 @@
       :root { --page-gutter: 24px; --section-top: 84px; }
       .nav { gap: 24px; }
       .nav__links { gap: 20px; }
-      .work-stage { height: clamp(430px, 45vw, 520px); }
+      .work-stage { height: clamp(460px, 48vw, 580px); }
       .project-card { width: min(64vw, 760px); }
       .method { grid-template-columns: 76px minmax(220px, 1fr) minmax(250px, 39%); gap: clamp(22px, 4vw, 54px); }
       .reference-grid { gap: 18px; }
@@ -918,7 +918,7 @@
       .nav__brand { max-width: 122px; font-size: 9px; white-space: nowrap; }
       .nav__links { gap: 12px; font-size: 9px; white-space: nowrap; }
       .hero__title { font-size: clamp(50px, 16.5vw, 78px); }
-      .work-stage { height: 400px; }
+      .work-stage { height: 480px; min-height: 480px; }
       .project-card { width: 92vw; max-width: 520px; }
       .method { grid-template-columns: 54px minmax(0, 1fr); gap: 12px 18px; }
       .method__copy { grid-column: 2; max-width: none; }
@@ -1029,6 +1029,30 @@
       from { opacity: .25; transform: translate3d(0, 28px, 0) scale(.985); clip-path: inset(9% 0 0 0); }
       to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); clip-path: inset(0 0 0 0); }
     }
+
+    /* Keep external-link arrows typographic on iOS instead of allowing emoji substitution. */
+    .external-arrow { display: inline-block; font-family: Arial, sans-serif; font-variant-emoji: text; line-height: 1; }
+
+    /* On phones, references remain a swipeable sequence rather than a long vertical stack. */
+    @media (max-width: 680px) {
+      .references { overflow: hidden; }
+      .reference-grid {
+        grid-template-columns: none;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(84vw, 84vw);
+        gap: 16px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0 0 16px;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-inline: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        touch-action: pan-x pan-y;
+      }
+      .reference-grid::-webkit-scrollbar { display: none; }
+      .reference-card { min-height: 520px; scroll-snap-align: start; }
+    }
   </style>
 </head>
   <body>
@@ -1098,7 +1122,7 @@
           <small>Agile Coach · Project Manager</small>
           <div class="contact-modal__contact-row">
             <a class="contact-modal__contact" href="mailto:Justin.wu0908@hotmail.com">Justin.wu0908@hotmail.com</a>
-            <a class="contact-modal__linkedin" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+            <a class="contact-modal__linkedin" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn <span class="external-arrow" aria-hidden="true">&#8599;&#65038;</span></a>
           </div>
         </div>
       </div>
@@ -2503,7 +2527,8 @@
 
     function renderProjectActions(project, ui) {
       const actionArea = document.getElementById('projectModalActions');
-      const actionLinks = project.actions.map(action => `<a class="modal-action${action.primary ? '' : ' modal-action--secondary'}" href="${action.href}"${action.external ? ' target="_blank" rel="noreferrer"' : ''}${action.download ? ' download' : ''}>${action.label}</a>`).join('');
+      const actionLabel = label => String(label).replaceAll('↗', '<span class="external-arrow" aria-hidden="true">&#8599;&#65038;</span>');
+      const actionLinks = project.actions.map(action => `<a class="modal-action${action.primary ? '' : ' modal-action--secondary'}" href="${action.href}"${action.external ? ' target="_blank" rel="noreferrer"' : ''}${action.download ? ' download' : ''}>${actionLabel(action.label)}</a>`).join('');
       actionArea.setAttribute('aria-label', ui.accessLabel);
 
       let actionLinksElement = actionArea.querySelector('.project-modal__action-links');
