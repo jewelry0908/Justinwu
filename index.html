@@ -917,6 +917,8 @@
       .nav { top: 14px; gap: 12px; }
       .nav__brand { max-width: 122px; font-size: 9px; white-space: nowrap; }
       .nav__links { gap: 12px; font-size: 9px; white-space: nowrap; }
+      /* Keep the opening scene stable while mobile browser chrome settles. */
+      .hero { min-height: 100svh; overflow-anchor: none; }
       .hero__title { font-size: clamp(50px, 16.5vw, 78px); }
       .work-stage { height: 480px; min-height: 480px; }
       .project-card { width: 92vw; max-width: 520px; }
@@ -2840,6 +2842,45 @@
     const closing = document.getElementById('closing');
     const hero = document.getElementById('home');
     let heroHasLeft = false;
+
+    // Mobile browsers can restore a stale scroll offset while their address bar
+    // and the opening animation settle. Keep a fresh, non-anchor visit on Hero
+    // until the visitor deliberately starts navigating.
+    const initialHash = window.location.hash;
+    const shouldPinInitialHero = window.matchMedia('(hover: none), (pointer: coarse)').matches
+      && (!initialHash || initialHash === '#home');
+    let initialHeroPinning = shouldPinInitialHero;
+    let initialHeroClaimedByVisitor = false;
+
+    function pinInitialHero() {
+      if (!initialHeroPinning || initialHeroClaimedByVisitor) return;
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
+
+    if (shouldPinInitialHero) {
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      ['touchstart', 'pointerdown', 'wheel', 'keydown'].forEach(eventName => {
+        window.addEventListener(eventName, () => {
+          initialHeroClaimedByVisitor = true;
+          initialHeroPinning = false;
+        }, { once: true, passive: true });
+      });
+      window.addEventListener('scroll', () => {
+        if (initialHeroPinning && !initialHeroClaimedByVisitor && window.scrollY > 2) {
+          requestAnimationFrame(pinInitialHero);
+        }
+      }, { passive: true });
+      pinInitialHero();
+      requestAnimationFrame(pinInitialHero);
+      window.addEventListener('pageshow', pinInitialHero, { once: true });
+      window.addEventListener('load', pinInitialHero, { once: true });
+      window.setTimeout(pinInitialHero, 140);
+      window.setTimeout(pinInitialHero, 760);
+      window.setTimeout(() => {
+        pinInitialHero();
+        initialHeroPinning = false;
+      }, 1850);
+    }
 
     function replayHero() {
       document.documentElement.classList.remove('is-ready');
