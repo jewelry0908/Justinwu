@@ -635,18 +635,25 @@
     }
     .project-card__name-zh { margin-top: 10px; font-size: .43em; }
     .project-card__summary {
+      display: block;
       max-width: 35ch;
-      margin: 20px 0 17px;
+      margin: 18px 0 0;
       font-size: clamp(14px, 1.16vw, 17px);
       line-height: 1.38;
+      text-wrap: pretty;
     }
+    .project-card__summary--zh { margin-top: 5px; color: rgba(248,248,245,.8); }
     .project-card__tag {
       display: block;
+      margin-top: 17px;
       padding-top: 14px;
       border-top: 1px solid rgba(248,248,245,.42);
       color: var(--paper);
     }
-    .project-card__meta { margin-top: 8px; max-width: 38ch; line-height: 1.35; }
+    .project-card__tag--zh { margin-top: 4px; padding-top: 0; border-top: 0; color: rgba(248,248,245,.72); }
+    .project-card__meta { display: block; max-width: 38ch; line-height: 1.35; }
+    .project-card__meta--en { margin-top: 9px; color: var(--paper); }
+    .project-card__meta--zh { margin-top: 4px; color: var(--muted); }
     .project-card__bottom .project-card__open { margin: 0; }
     .project-card:not(.is-active) .project-card__top { opacity: .26; }
     .project-card:not(.is-active) .project-card__bottom { opacity: 0; transform: translateY(12px); }
@@ -715,7 +722,12 @@
     @media (max-width: 850px) {
       .project-card__top { gap: 0; }
       .project-card__name { font-size: clamp(28px, 8.5vw, 42px); }
-      .project-card__summary { margin: 16px 0 14px; font-size: 14px; }
+      .project-card__summary { margin: 16px 0 0; font-size: 14px; }
+      .project-card__summary--zh { margin-top: 4px; }
+      .project-card__tag { margin-top: 15px; padding-top: 12px; }
+      .project-card__tag--zh { margin-top: 3px; padding-top: 0; }
+      .project-card__meta--en { margin-top: 8px; }
+      .project-card__meta--zh { margin-top: 3px; }
       .project-card__bottom { min-height: 42px; padding-top: 15px; }
       .project-modal__header { padding: 23px 20px 20px; }
       .project-modal__header-actions { padding-top: 0; padding-right: 38px; }
@@ -1600,11 +1612,14 @@
     const approvedProjects = [
       {
         id: 'rag',
-        tag: 'RETRIEVAL / EVALUATION',
+        cardTagEn: 'AI RAG / TRUSTED SERVICE',
+        cardTagZh: 'AI RAG / 可信服务',
         cardTitleEn: 'RAG CUSTOMER<br>SERVICE SYSTEM',
         cardTitleZh: 'RAG 智能客服系统',
-        summary: '受治理知识库、可验证检索与安全收敛',
-        meta: 'Embedding · pgvector · Top-K · 固定评测',
+        summaryEn: 'A governed knowledge system for verifiable answers and safe escalation.',
+        summaryZh: '以受治理知识库支撑可验证回答与安全收敛。',
+        metaEn: 'AI RAG · Embedding · pgvector · Top-K · Evaluation',
+        metaZh: 'AI RAG · 向量检索 · 受控生成 · 固定评测',
         label: 'RAG CUSTOMER SERVICE SYSTEM',
         title: { en: 'RAG CUSTOMER SERVICE SYSTEM', zh: 'RAG 智能客服系统' },
         actions: [
@@ -1736,12 +1751,15 @@
       },
       {
         id: 'baobaodou',
-        tag: 'INVENTORY / RECOGNITION',
-        cardTitleEn: 'BAOBAODOU<br>BEAD WORKSHOP',
-        cardTitleZh: '宝宝豆拼豆工坊',
-        summary: '项目、库存与流水构成可追溯的创作运营闭环',
-        meta: 'lazyCodeLoading · 差量同步 · 受控 AI 识别',
-        label: 'BAOBAODOU BEAD WORKSHOP',
+        cardTagEn: 'AI OPERATIONS / VIBE CODING',
+        cardTagZh: 'AI 运营 / VIBE CODING',
+        cardTitleEn: 'AI BEAD INVENTORY<br>SYSTEM',
+        cardTitleZh: 'AI 拼豆豆仓管理系统',
+        summaryEn: 'A traceable system linking projects, materials and inventory movement.',
+        summaryZh: '让项目、材料与库存变动围绕同一份事实可追溯地联动。',
+        metaEn: 'AI Recognition · Vibe Coding · Cloud Functions · Delta Sync',
+        metaZh: 'AI 图纸识别 · Vibe Coding · 云函数 · 差量同步',
+        label: 'AI BEAD INVENTORY SYSTEM',
         title: { en: 'BAOBAODOU BEAD WORKSHOP', zh: '宝宝豆拼豆工坊 / 拼豆豆仓管理小程序' },
         actions: [
           { label: '体验交互原型 ↗', href: 'https://www.figma.com/proto/ZMzFF3Kb0VKMPvufW04jgn/%E6%8B%BC%E8%B1%86%E8%B1%86%E4%BB%93%E7%AE%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%C2%B7-UI%E9%AB%98%E4%BF%9D%E7%9C%9F%E5%8E%9F%E5%9E%8B?node-id=0-1&page-id=0%3A1&scaling=scale-down&content-scaling=fixed', primary: true, external: true }
@@ -1856,11 +1874,14 @@
       },
       {
         id: 'copilot',
-        tag: 'SCREENSHOT / TASK / RISK',
+        cardTagEn: 'AI DELIVERY / FACT GOVERNANCE',
+        cardTagZh: 'AI 交付 / 事实治理',
         cardTitleEn: 'DELIVERY INTELLIGENCE<br>COPILOT',
         cardTitleZh: '交付情报 Copilot',
-        summary: '多源项目状态转化为可审查的周报事实链',
-        meta: 'Vision · Confirmed JSON · 风险规则 · 周报草稿',
+        summaryEn: 'Turn multi-source delivery signals into reviewable weekly-report facts.',
+        summaryZh: '将多源项目状态转化为可审查的周报事实链。',
+        metaEn: 'AI Vision · Confirmed JSON · Risk Rules · Prompt Tuning',
+        metaZh: 'AI 视觉识别 · 已确认 JSON · 风险规则 · 提示词调优',
         label: 'DELIVERY INTELLIGENCE COPILOT',
         title: { en: 'DELIVERY INTELLIGENCE COPILOT', zh: '交付情报 Copilot / 多模态周报自动化系统' },
         actions: [
@@ -2288,7 +2309,7 @@
       button.className = 'project-card';
       button.dataset.index = index;
       button.setAttribute('aria-label', `查看 ${project.cardTitleZh} 项目详情`);
-      button.innerHTML = `<span class="project-card__top"><span class="project-card__name"><span class="project-card__name-en">${project.cardTitleEn}</span><span class="project-card__name-zh">${project.cardTitleZh}</span></span><span class="project-card__summary">${project.summary}</span><span class="project-card__tag">${project.tag}</span><span class="project-card__meta">${project.meta}</span></span><span class="project-card__bottom"><span class="project-card__open">Open case →</span></span>`;
+      button.innerHTML = `<span class="project-card__top"><span class="project-card__name"><span class="project-card__name-en">${project.cardTitleEn}</span><span class="project-card__name-zh" lang="zh-CN">${project.cardTitleZh}</span></span><span class="project-card__summary project-card__summary--en" lang="en">${project.summaryEn}</span><span class="project-card__summary project-card__summary--zh" lang="zh-CN">${project.summaryZh}</span><span class="project-card__tag project-card__tag--en" lang="en">${project.cardTagEn}</span><span class="project-card__tag project-card__tag--zh" lang="zh-CN">${project.cardTagZh}</span><span class="project-card__meta project-card__meta--en" lang="en">${project.metaEn}</span><span class="project-card__meta project-card__meta--zh" lang="zh-CN">${project.metaZh}</span></span><span class="project-card__bottom"><span class="project-card__open">Open case →</span></span>`;
       button.addEventListener('click', () => {
         if (performance.now() < suppressProjectClickUntil) return;
         if (selectedProject === index) openProject(project);
@@ -2386,6 +2407,8 @@
       if (!overlay.classList.contains('is-open')) return;
       if (overlay === projectOverlay) {
         window.clearTimeout(projectLanguageTimer);
+        projectLanguageRestoreObserver?.disconnect();
+        projectLanguageRestoreObserver = null;
         overlay.querySelector('.project-modal').classList.remove('is-language-entering');
       }
       overlay.classList.remove('is-open');
@@ -2470,6 +2493,7 @@
     let activeProject = null;
     let projectLanguageTimer = 0;
     let projectLanguageVersion = 0;
+    let projectLanguageRestoreObserver = null;
 
     function localisedProject(project) {
       if (projectLanguage !== 'en') return project;
@@ -2543,6 +2567,8 @@
       const savedScrollTop = modal.scrollTop;
       const switchVersion = ++projectLanguageVersion;
       window.clearTimeout(projectLanguageTimer);
+      projectLanguageRestoreObserver?.disconnect();
+      projectLanguageRestoreObserver = null;
       modal.classList.remove('is-language-entering');
       projectLanguage = language;
       renderProjectDetails(false);
@@ -2553,7 +2579,19 @@
       };
       restoreScrollPosition();
       requestAnimationFrame(restoreScrollPosition);
-      window.setTimeout(restoreScrollPosition, 180);
+      window.setTimeout(restoreScrollPosition, 120);
+
+      // Mermaid and images can settle after the new language is rendered. Keep the
+      // current reading position stable while that one-time layout work completes.
+      if ('ResizeObserver' in window) {
+        projectLanguageRestoreObserver = new ResizeObserver(() => requestAnimationFrame(restoreScrollPosition));
+        projectLanguageRestoreObserver.observe(projectCase);
+        window.setTimeout(() => {
+          restoreScrollPosition();
+          projectLanguageRestoreObserver?.disconnect();
+          projectLanguageRestoreObserver = null;
+        }, 760);
+      }
 
       if (!reduceMotion) {
         void modal.offsetWidth;
@@ -2569,6 +2607,8 @@
       projectLanguage = 'en';
       projectLanguageVersion += 1;
       window.clearTimeout(projectLanguageTimer);
+      projectLanguageRestoreObserver?.disconnect();
+      projectLanguageRestoreObserver = null;
       projectOverlay.querySelector('.project-modal').classList.remove('is-language-entering');
       renderProjectDetails(true);
       openOverlay(projectOverlay);
