@@ -324,17 +324,8 @@
     .modal-close:hover { transform: rotate(90deg) scale(.9); }
     .contact-modal { min-height: 564px; padding: 52px 38px 36px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: 22px; }
     .contact-modal__title { grid-column: 1 / span 8; grid-row: 1; width: auto; margin: 0; font-family: Outfit, Arial, sans-serif; font-size: clamp(35px, 4.2vw, 56px); font-weight: 600; letter-spacing: -.07em; line-height: .84; text-transform: uppercase; }
-    .contact-modal__content { grid-column: 1 / span 10; grid-row: 2; display: grid; grid-template-columns: 222px minmax(0, 1fr); gap: 28px; margin: 26px 0 20px; align-self: end; }
-    .contact-modal__portrait {
-  width: 100%;
-  height: 100%;
-  min-height: 272px;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-  background: var(--ink);
-}
-    .contact-modal__bio { align-self: end; max-width: 520px; }
+    .contact-modal__content { grid-column: 1 / span 10; grid-row: 2; display: flex; flex-direction: column; justify-content: flex-end; max-width: 520px; min-height: 272px; margin: 26px 0 20px; align-self: end; }
+    .contact-modal__bio { max-width: none; }
     .contact-modal__bio p { margin: 0; font-size: 14px; line-height: 1.35; letter-spacing: -.02em; }
     .contact-modal__bio small { display: block; margin-top: 18px; font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
     .contact-modal__contact-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 24px; margin-top: 12px; }
@@ -517,8 +508,7 @@
       .closing__footer { margin-top: auto; padding-top: 48px; font-size: 8px; }
       .contact-modal { padding: 30px 24px; grid-template-columns: repeat(8, minmax(0, 1fr)); }
       .contact-modal__title { grid-column: 1 / span 7; width: auto; }
-      .contact-modal__content { grid-column: 1 / span 8; grid-template-columns: 110px 1fr; gap: 18px; margin-top: 34px; }
-      .contact-modal__portrait { min-height: 180px; }
+      .contact-modal__content { grid-column: 1 / span 8; min-height: 180px; margin-top: 34px; }
       .contact-modal__linkedin { grid-column: 6 / span 3; }
       #projectOverlay { padding: 10px; }
       #projectOverlay .project-modal { min-height: calc(100svh - 20px); max-height: calc(100svh - 20px); }
@@ -937,8 +927,7 @@
       .closing__title { font-size: clamp(49px, 16vw, 74px); }
       .closing__body { max-width: 38ch; }
       .contact-modal { width: calc(100% - 24px); min-height: auto; padding: 28px 24px; }
-      .contact-modal__content { grid-template-columns: 1fr; gap: 24px; }
-      .contact-modal__portrait { width: min(100%, 260px); aspect-ratio: 1 / 1; }
+      .contact-modal__content { min-height: 0; margin-top: 42px; }
       .contact-modal__contact-row { align-items: flex-start; flex-direction: column; gap: 12px; }
       .project-modal { width: calc(100% - 16px); max-height: calc(100svh - 16px); }
       .project-modal__header { align-items: flex-start; flex-wrap: wrap; gap: 18px; padding: 22px 20px 20px; }
@@ -1125,7 +1114,6 @@
       <button class="modal-close" type="button" aria-label="Close contact card" data-close-overlay>×</button>
       <h2 class="contact-modal__title" id="contactTitle">Justin Wu</h2>
       <div class="contact-modal__content">
-       <img class="contact-modal__portrait" src="assets/justin-wu.png" alt="Portrait of Justin Wu">
         <div class="contact-modal__bio">
           <p>Product strategy, AI systems, data analysis and delivery leadership for complex product problems.</p>
           <small>AI Product Manager · Data Analyst · Business Analyst</small>
@@ -1178,11 +1166,12 @@
         id: 'grounded', tag: 'Retrieval / evaluation', name: 'Grounded<br>Support', summary: 'A RAG customer service system', meta: '8 knowledge docs · 35 chunks · 20 tests',
         label: 'Project 01 / RAG customer service system', title: 'Grounded support',
         actions: [
-          { label: 'Open live product ↗', href: 'https://jewelry0908.github.io/rag-customer-service-portfolio/', primary: true, external: true }
+          { label: 'Open live product ↗', href: 'https://jewelry0908.github.io/rag-customer-service-portfolio/', primary: true, external: true },
+          { label: 'View source code ↗', href: 'https://github.com/jewelry0908/rag-customer-service-portfolio', external: true }
         ],
         statement: 'The knowledge base—not the model—is the source of truth for every service answer.',
         context: 'Rule-heavy education consultation requires answers that can be verified, updated and safely withheld. The prototype turns separate course, pricing, refund and service rules into one governed support experience.',
-        accessNote: 'Public prototype uses synthetic consultation content. The live product is available for review.',
+        accessNote: 'Public prototype uses synthetic consultation content. The live product and source code are available for review.',
         role: 'Product strategy, RAG system design, evaluation and delivery.',
         status: 'Public prototype · core RAG path verified.',
         privacy: 'Synthetic domain content · no customer or production data.',
@@ -1190,7 +1179,8 @@
           { eyebrow: '01 / PRD', title: 'Set a service boundary', body: 'Knowledge gaps, payments, personal data and complaints do not fall through to a fluent answer: the product refuses or hands off when the evidence is insufficient or risk is high.' },
           { eyebrow: '02 / PROTOTYPE', title: 'Make evidence visible', body: 'Each response is paired with source cards, allowing a visitor to inspect the supporting material instead of accepting an unsupported answer.' },
           { eyebrow: '03 / SYSTEM', title: 'Separate retrieval from generation', body: 'A managed baseline validated the approach before the implemented path connected governed Markdown sources, embeddings, pgvector retrieval, an edge API and controlled generation.' },
-          { eyebrow: '04 / EVALUATION', title: 'Test behaviour, not fluency', body: 'Fixed cases cover facts, rephrases, no-answer, privacy, complaints and prompt injection. Retrieval quality and final-answer behaviour are assessed separately.' }
+          { eyebrow: '04 / EVALUATION', title: 'Test behaviour, not fluency', body: 'Fixed cases cover facts, rephrases, no-answer, privacy, complaints and prompt injection. Retrieval quality and final-answer behaviour are assessed separately.' },
+          { eyebrow: '05 / NEXT STEP', title: 'Improve answer-level ranking', body: 'Raise the decisive passage when the correct document is retrieved but its best answer is not yet ranked first.', next: true }
         ],
         case: {
           prd: {
@@ -1243,7 +1233,8 @@
           { eyebrow: '01 / PRD', title: 'Let projects drive the ledger', body: 'A project is the business source of every material change—not a record kept beside the warehouse. Taxonomy, permissions and records follow that single operating rule.' },
           { eyebrow: '02 / PROTOTYPE', title: 'Keep AI editable', body: 'Project creation, quantity changes, stock search, low-stock actions and movement history are implemented. Recognition results remain editable drafts before they can affect a record.' },
           { eyebrow: '03 / SYSTEM', title: 'Close the data loop', body: 'Project, inventory, movement ledger and AI-experiment records share one model. Adjustments apply only the delta and retain an auditable reason for the change.' },
-          { eyebrow: '04 / EVALUATION', title: 'Check cross-module consistency', body: 'Acceptance follows data from project edits through warehouse updates to ledger history. AI input quality is judged before a person confirms the candidate data.' }
+          { eyebrow: '04 / EVALUATION', title: 'Check cross-module consistency', body: 'Acceptance follows data from project edits through warehouse updates to ledger history. AI input quality is judged before a person confirms the candidate data.' },
+          { eyebrow: '05 / NEXT STEP', title: 'Validate the public entry points', body: 'Publish the reviewed QR and prototype route, then continue testing recognition without allowing AI to write directly to the inventory ledger.', next: true }
         ],
         case: {
           prd: {
@@ -1297,7 +1288,8 @@
           { eyebrow: '01 / PRD', title: 'Control fact production', body: 'Raw screenshots become structured records, then confirmed facts, rule-derived risks and finally a reviewable report draft. Each layer has a distinct audience and permission boundary.' },
           { eyebrow: '02 / PROTOTYPE', title: 'Put uncertainty in the review queue', body: 'Conflicts, missing fields and unresolved items are visible before generation. The final report remains a human-reviewed draft—not an automatic external communication.' },
           { eyebrow: '03 / WORKFLOW', title: 'Gate model output with rules', body: 'Vision extraction and schema normalisation pass through human confirmation. Only Confirmed JSON reaches deterministic risk rules, the filtered fact pack and report generation.' },
-          { eyebrow: '04 / EVALUATION', title: 'Use W04 as a test signal', body: 'The synthetic W04 pack covers project-system, planning, programming, UI/art/motion and QA sources, including intentional conflicts, blockers, dependencies and missing-date signals.' }
+          { eyebrow: '04 / EVALUATION', title: 'Use W04 as a test signal', body: 'The synthetic W04 pack covers project-system, planning, programming, UI/art/motion and QA sources, including intentional conflicts, blockers, dependencies and missing-date signals.' },
+          { eyebrow: '05 / NEXT STEP', title: 'Publish a safe sample path', body: 'Add the self-service W04 pack and extend regression coverage while preserving the rule that unconfirmed internal remarks never enter a client-facing report.', next: true }
         ],
         case: {
           prd: {
@@ -2488,6 +2480,13 @@
       return `<div class="case-section__header"><h2 class="case-section__group">${kicker}</h2><h3 class="case-section__title">${title}</h3></div>`;
     }
 
+    function resolveAssetPath(path) {
+      const cleanPath = String(path).replace(/^\.?\//, '');
+      if (!window.location.hostname.endsWith('.github.io')) return cleanPath;
+      const repoName = window.location.pathname.split('/').filter(Boolean)[0];
+      return repoName ? `/${repoName}/${cleanPath}` : `/${cleanPath}`;
+    }
+
     function renderCaseSection(section, language) {
       const ui = detailCopy[language];
       const points = section.points?.length ? `<ul class="case-point-list">${section.points.map(point => `<li>${point}</li>`).join('')}</ul>` : '';
@@ -2509,11 +2508,11 @@
         return `<section class="case-section case-section--diagram">${caseHeader(section.kicker, section.title)}<div class="case-section__body"><p class="case-section__intro">${section.lead}</p><div class="case-diagram"><p class="case-diagram__label">${section.diagramLabel}</p><pre class="mermaid">${section.diagram}</pre></div>${system}</div></section>`;
       }
       if (section.kind === 'gallery') {
-        const gallery = section.gallery.map(item => `<button class="case-media" type="button" data-media-src="${item.src}" data-media-alt="${item.alt}" data-media-label="${item.label}" aria-label="${ui.mediaOpen}${item.label}"><img src="${item.src}" alt="${item.alt}" loading="lazy"><span class="case-media__caption">${item.label}</span></button>`).join('');
+        const gallery = section.gallery.map(item => `<button class="case-media" type="button" data-media-src="${resolveAssetPath(item.src)}" data-media-alt="${item.alt}" data-media-label="${item.label}" aria-label="${ui.mediaOpen}${item.label}"><img src="${resolveAssetPath(item.src)}" alt="${item.alt}" loading="lazy"><span class="case-media__caption">${item.label}</span></button>`).join('');
         return `<section class="case-section case-section--gallery">${caseHeader(section.kicker, section.title)}<div class="case-section__body"><p class="case-section__intro">${section.lead}</p><div class="case-section__content">${paragraphs}</div></div><div class="case-media-grid case-media-grid--prototype">${gallery}</div></section>`;
       }
       if (section.kind === 'evidence') {
-        const gallery = section.gallery?.length ? `<div class="case-media-grid">${section.gallery.map(item => `<button class="case-media" type="button" data-media-src="${item.src}" data-media-alt="${item.alt}" data-media-label="${item.label}" aria-label="${ui.mediaOpen}${item.label}"><img src="${item.src}" alt="${item.alt}" loading="lazy"><span class="case-media__caption">${item.label}</span></button>`).join('')}</div>` : '';
+        const gallery = section.gallery?.length ? `<div class="case-media-grid">${section.gallery.map(item => `<button class="case-media" type="button" data-media-src="${resolveAssetPath(item.src)}" data-media-alt="${item.alt}" data-media-label="${item.label}" aria-label="${ui.mediaOpen}${item.label}"><img src="${resolveAssetPath(item.src)}" alt="${item.alt}" loading="lazy"><span class="case-media__caption">${item.label}</span></button>`).join('')}</div>` : '';
         return `<section class="case-section case-section--evidence">${caseHeader(section.kicker, section.title)}<div class="case-evidence">${section.metrics.map(item => `<article class="case-evidence__item"><p class="case-evidence__value">${item.value}</p><p class="case-evidence__label">${item.label}</p><p class="case-evidence__copy">${item.copy}</p></article>`).join('')}</div><ul class="case-evidence-notes">${section.notes.map(note => `<li>${note}</li>`).join('')}</ul>${gallery}</section>`;
       }
       return `<section class="case-section case-section--narrative">${caseHeader(section.kicker, section.title)}<div class="case-section__body"><p class="case-section__intro">${section.lead}</p><div class="case-section__content">${paragraphs}${points}</div></div></section>`;
@@ -2582,7 +2581,7 @@
       document.getElementById('projectContext').textContent = project.context;
       document.getElementById('projectFacts').innerHTML = project.facts.map(fact => `<div class="project-modal__fact"><dt>${fact.label}</dt><dd>${fact.value}</dd></div>`).join('');
       renderProjectActions(project, ui);
-      document.getElementById('projectExperience').innerHTML = project.experience ? `<aside class="project-experience"><img class="project-experience__qr" src="${project.experience.qr}" alt="${project.experience.alt}"><div><p class="project-experience__eyebrow">${project.experience.kicker}</p><p class="project-experience__title">${project.experience.title}</p><p class="project-experience__copy">${project.experience.copy}</p></div></aside>` : '';
+      document.getElementById('projectExperience').innerHTML = project.experience ? `<aside class="project-experience"><img class="project-experience__qr" src="${resolveAssetPath(project.experience.qr)}" alt="${project.experience.alt}"><div><p class="project-experience__eyebrow">${project.experience.kicker}</p><p class="project-experience__title">${project.experience.title}</p><p class="project-experience__copy">${project.experience.copy}</p></div></aside>` : '';
       const sections = project.id === 'copilot'
         ? project.case.sections
         : project.case.sections.filter(section => section.kicker !== '产品体验与图文证据' && section.kicker !== 'Product experience and visual evidence');
@@ -2797,7 +2796,7 @@
     function updateCursorContrast(target) {
       if (!hasFinePointer) return;
       const element = target instanceof Element ? target : null;
-      const isDarkControl = element?.closest('.project-card, .method, .reference-card, .contact-modal__portrait, .modal-action:not(.modal-action--secondary)');
+      const isDarkControl = element?.closest('.project-card, .method, .reference-card, .modal-action:not(.modal-action--secondary)');
       const isLightSurface = element?.closest('.paper-modal, .screen:not(.screen--dark), .modal-action--secondary');
       const isDarkScene = Boolean(isDarkControl) || (!isLightSurface && document.documentElement.classList.contains('dark-particles'));
       document.body.classList.toggle('cursor-is-inverse', isDarkScene);
