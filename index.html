@@ -1125,14 +1125,14 @@
       <button class="modal-close" type="button" aria-label="Close contact card" data-close-overlay>×</button>
       <h2 class="contact-modal__title" id="contactTitle">Justin Wu</h2>
       <div class="contact-modal__content">
-       <img class="contact-modal__portrait" src="assets/profile/justin-wu.jpg" alt="Portrait of Justin Wu">
+       <img class="contact-modal__portrait" src="assets/justin-wu.png" alt="Portrait of Justin Wu">
         <div class="contact-modal__bio">
           <p>Product strategy, AI systems, data analysis and delivery leadership for complex product problems.</p>
           <small>AI Product Manager · Data Analyst · Business Analyst</small>
           <small>Agile Coach · Project Manager</small>
           <div class="contact-modal__contact-row">
             <a class="contact-modal__contact" href="mailto:Justin.wu0908@hotmail.com">Justin.wu0908@hotmail.com</a>
-            <a class="contact-modal__linkedin" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn <span class="external-arrow" aria-hidden="true">&#8599;&#65038;</span></a>
+            <a class="contact-modal__linkedin" href="https://www.linkedin.com/in/justin-wu-793260319" target="_blank" rel="noopener noreferrer">LinkedIn <span class="external-arrow" aria-hidden="true">&#8599;&#65038;</span></a>
           </div>
         </div>
       </div>
@@ -1178,12 +1178,11 @@
         id: 'grounded', tag: 'Retrieval / evaluation', name: 'Grounded<br>Support', summary: 'A RAG customer service system', meta: '8 knowledge docs · 35 chunks · 20 tests',
         label: 'Project 01 / RAG customer service system', title: 'Grounded support',
         actions: [
-          { label: 'Open live product ↗', href: 'https://jewelry0908.github.io/rag-customer-service-portfolio/', primary: true, external: true },
-          { label: 'View source code ↗', href: 'https://github.com/jewelry0908/rag-customer-service-portfolio', external: true }
+          { label: 'Open live product ↗', href: 'https://jewelry0908.github.io/rag-customer-service-portfolio/', primary: true, external: true }
         ],
         statement: 'The knowledge base—not the model—is the source of truth for every service answer.',
         context: 'Rule-heavy education consultation requires answers that can be verified, updated and safely withheld. The prototype turns separate course, pricing, refund and service rules into one governed support experience.',
-        accessNote: 'Public prototype uses synthetic consultation content. The live product and source code are available for review.',
+        accessNote: 'Public prototype uses synthetic consultation content. The live product is available for review.',
         role: 'Product strategy, RAG system design, evaluation and delivery.',
         status: 'Public prototype · core RAG path verified.',
         privacy: 'Synthetic domain content · no customer or production data.',
@@ -1191,8 +1190,7 @@
           { eyebrow: '01 / PRD', title: 'Set a service boundary', body: 'Knowledge gaps, payments, personal data and complaints do not fall through to a fluent answer: the product refuses or hands off when the evidence is insufficient or risk is high.' },
           { eyebrow: '02 / PROTOTYPE', title: 'Make evidence visible', body: 'Each response is paired with source cards, allowing a visitor to inspect the supporting material instead of accepting an unsupported answer.' },
           { eyebrow: '03 / SYSTEM', title: 'Separate retrieval from generation', body: 'A managed baseline validated the approach before the implemented path connected governed Markdown sources, embeddings, pgvector retrieval, an edge API and controlled generation.' },
-          { eyebrow: '04 / EVALUATION', title: 'Test behaviour, not fluency', body: 'Fixed cases cover facts, rephrases, no-answer, privacy, complaints and prompt injection. Retrieval quality and final-answer behaviour are assessed separately.' },
-          { eyebrow: '05 / NEXT STEP', title: 'Improve answer-level ranking', body: 'Raise the decisive passage when the correct document is retrieved but its best answer is not yet ranked first.', next: true }
+          { eyebrow: '04 / EVALUATION', title: 'Test behaviour, not fluency', body: 'Fixed cases cover facts, rephrases, no-answer, privacy, complaints and prompt injection. Retrieval quality and final-answer behaviour are assessed separately.' }
         ],
         case: {
           prd: {
@@ -1245,8 +1243,7 @@
           { eyebrow: '01 / PRD', title: 'Let projects drive the ledger', body: 'A project is the business source of every material change—not a record kept beside the warehouse. Taxonomy, permissions and records follow that single operating rule.' },
           { eyebrow: '02 / PROTOTYPE', title: 'Keep AI editable', body: 'Project creation, quantity changes, stock search, low-stock actions and movement history are implemented. Recognition results remain editable drafts before they can affect a record.' },
           { eyebrow: '03 / SYSTEM', title: 'Close the data loop', body: 'Project, inventory, movement ledger and AI-experiment records share one model. Adjustments apply only the delta and retain an auditable reason for the change.' },
-          { eyebrow: '04 / EVALUATION', title: 'Check cross-module consistency', body: 'Acceptance follows data from project edits through warehouse updates to ledger history. AI input quality is judged before a person confirms the candidate data.' },
-          { eyebrow: '05 / NEXT STEP', title: 'Validate the public entry points', body: 'Publish the reviewed QR and prototype route, then continue testing recognition without allowing AI to write directly to the inventory ledger.', next: true }
+          { eyebrow: '04 / EVALUATION', title: 'Check cross-module consistency', body: 'Acceptance follows data from project edits through warehouse updates to ledger history. AI input quality is judged before a person confirms the candidate data.' }
         ],
         case: {
           prd: {
@@ -1300,8 +1297,7 @@
           { eyebrow: '01 / PRD', title: 'Control fact production', body: 'Raw screenshots become structured records, then confirmed facts, rule-derived risks and finally a reviewable report draft. Each layer has a distinct audience and permission boundary.' },
           { eyebrow: '02 / PROTOTYPE', title: 'Put uncertainty in the review queue', body: 'Conflicts, missing fields and unresolved items are visible before generation. The final report remains a human-reviewed draft—not an automatic external communication.' },
           { eyebrow: '03 / WORKFLOW', title: 'Gate model output with rules', body: 'Vision extraction and schema normalisation pass through human confirmation. Only Confirmed JSON reaches deterministic risk rules, the filtered fact pack and report generation.' },
-          { eyebrow: '04 / EVALUATION', title: 'Use W04 as a test signal', body: 'The synthetic W04 pack covers project-system, planning, programming, UI/art/motion and QA sources, including intentional conflicts, blockers, dependencies and missing-date signals.' },
-          { eyebrow: '05 / NEXT STEP', title: 'Publish a safe sample path', body: 'Add the self-service W04 pack and extend regression coverage while preserving the rule that unconfirmed internal remarks never enter a client-facing report.', next: true }
+          { eyebrow: '04 / EVALUATION', title: 'Use W04 as a test signal', body: 'The synthetic W04 pack covers project-system, planning, programming, UI/art/motion and QA sources, including intentional conflicts, blockers, dependencies and missing-date signals.' }
         ],
         case: {
           prd: {
