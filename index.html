@@ -1,12 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Justin Wu product portfolio prototype">
+  <meta name="description" content="Justin Wu 吴嘉伟 — AI 产品经理作品集：RAG 智能客服系统、AI 库存运营小程序、多模态周报工作流与 AI 3D 生产管线方案。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Justin Wu | AI Product Manager Portfolio">
+  <meta property="og:description" content="RAG 智能客服 · AI 库存运营 · 多模态周报工作流 · AI 3D 生产管线">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap">
   <title>Justin Wu | Product Portfolio</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
 
     :root {
       --paper: #f8f8f5;
@@ -1052,6 +1058,108 @@
       .reference-grid::-webkit-scrollbar { display: none; }
       .reference-card { min-height: 520px; scroll-snap-align: start; }
     }
+
+    /* ===== 优化补丁 2026-08：纵向单列版式（统一字号梯度 + 通栏内容）===== */
+    /* 版式基准：内栏 832px；所有文字、组件、分割线共享同一对左右边线 */
+    .project-modal__lead { max-width: none; margin-left: 0; margin-right: 0; }
+    .project-modal__lead-title,
+    .project-modal__statement,
+    .project-modal__context-block,
+    .project-modal__context,
+    .case-copy-stack,
+    .case-copy-stack .case-section__copy,
+    .case-section__intro,
+    .case-section__content,
+    .case-story,
+    .case-point-list,
+    .case-prompt-compare,
+    .case-evidence-notes { max-width: none; }
+    /* story/对照表等内容延伸至分割线同宽：移除内层残留的 ch 限宽 */
+    .case-story__title,
+    .case-story__copy,
+    .case-prompt-compare__topic,
+    .case-prompt-compare__quote,
+    .case-prompt-compare__result { max-width: none; }
+    .project-modal__facts { max-width: 100%; margin-left: 0; margin-right: 0; }
+    /* 二维码卡片：既定视觉中心，保持居中 */
+    .project-experience { width: min(100%, 720px); margin-left: auto; margin-right: auto; }
+
+    /* 字号梯度：一级 kicker > 二级节标题 > 三级导语 > 正文 > 备注 */
+    .case-section__group { font-size: clamp(24px, 2.1vw, 28px); font-weight: 700; letter-spacing: -.03em; }
+    .case-section__title { font-size: clamp(17px, 1.4vw, 20px); font-weight: 650; }
+    .case-section__intro { font-size: 16px; }
+    .case-evidence-notes li { font-size: 13px; line-height: 1.65; }
+
+    /* 全部节类型统一纵向排列：kicker / 标题 / 内容依次独占一行 */
+    .case-section__header { margin-bottom: 26px; }
+    .case-section__group { margin: 0 0 12px; }
+    .case-section__title { margin: 0; max-width: none; }
+    /* story 节内部取消标签列，改为纵排 */
+    .case-story__item { grid-template-columns: 1fr; gap: 6px; }
+    .case-story__label { margin: 0; font-size: 12px; }
+    /* evidence 备注：auto-fit 横排，3 段三等分、2 段两等分 */
+    .case-evidence-notes { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px 28px; }
+    /* 分隔线统一由 .case-section 通栏承担，组件不自带顶框线 */
+    .case-story, .case-prompt-compare, .case-index, .case-evidence { border-top: 0; }
+
+    @media (min-width: 851px) {
+      /* 弹窗与内容容器：分割线长度 = 组件宽 = 内栏宽 */
+      #projectOverlay .project-modal { width: min(1020px, 100%); }
+      .project-modal__header, .project-modal__content {
+        padding-left: max(34px, calc((100% - 832px) / 2));
+        padding-right: max(34px, calc((100% - 832px) / 2));
+      }
+      .project-modal__content { max-width: none; margin: 0; }
+      /* 头部横向单排：标题居左，操作按钮居右；空间不足时按钮组整体落到第二行（仅 Copilot 双按钮情形） */
+      .project-modal__header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; column-gap: 28px; row-gap: 14px; }
+      .project-modal__header > div:first-child { flex: 0 1 auto; min-width: 0; }
+      .project-modal__header-actions { justify-content: flex-end; padding-top: 0; padding-right: 0; }
+      .project-modal__name { white-space: nowrap; font-size: clamp(20px, 1.9vw, 26px); }
+      /* 中文 kicker 与节标题不换行；英文长句标题允许折行（nowrap 会溢出裁切） */
+      .project-modal[lang="zh-CN"] .case-section__group,
+      .project-modal[lang="zh-CN"] .case-section__title { white-space: nowrap; }
+      /* 通栏组件占满内栏 */
+      .case-index,
+      .case-evidence,
+      .case-diagram,
+      .case-system-grid,
+      .case-media-grid { width: 100%; max-width: 100%; margin-left: 0; margin-right: 0; }
+      .case-diagram { margin-top: 8px; }
+      .case-system-grid, .case-media-grid { margin-top: 24px; }
+    }
+
+    /* ===== 优化补丁：动效系统 ===== */
+    /* 弹窗内容入场：分组错峰上浮，只动 transform/opacity */
+    @keyframes modal-block-in {
+      from { opacity: 0; transform: translate3d(0, 20px, 0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+    .project-modal.is-opening .project-experience,
+    .project-modal.is-opening .project-modal__lead,
+    .project-modal.is-opening .project-modal__facts,
+    .project-modal.is-opening .case-section { animation: modal-block-in .58s var(--ease-out) both; }
+    .project-modal.is-opening .project-modal__lead { animation-delay: .05s; }
+    .project-modal.is-opening .project-modal__facts { animation-delay: .11s; }
+    .project-modal.is-opening .case-section:nth-child(1) { animation-delay: .17s; }
+    .project-modal.is-opening .case-section:nth-child(2) { animation-delay: .23s; }
+    .project-modal.is-opening .case-section:nth-child(3) { animation-delay: .29s; }
+    .project-modal.is-opening .case-section:nth-child(n + 4) { animation-delay: .35s; }
+    /* 轮播非激活卡片的悬停反馈：提亮而不是位移（位移由 JS 管理） */
+    .work-stage .project-card:not(.is-active):hover { opacity: 1; filter: brightness(1); }
+    /* 按钮按压反馈：统一 scale(.96)，与既有 hover 形成"悬停浮起-按压回落"的完整手感 */
+    .modal-action:hover { box-shadow: 0 8px 16px -8px rgba(9,10,9,.4); }
+    .circle-control:active,
+    .modal-action:active,
+    .project-language-switch__button:active,
+    .closing__cta:active { transform: scale(.96); }
+
+    /* ===== 优化补丁：可访问性与兼容性 ===== */
+    .overlay:not(.is-open) { visibility: hidden; }
+    .overlay.is-open { visibility: visible; }
+    .screen { min-height: 100vh; min-height: 100dvh; }
+    @supports not (overflow: clip) {
+      .screen { overflow: hidden; }
+    }
   </style>
 </head>
   <body>
@@ -1162,476 +1270,6 @@
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer></script>
   <script>
     const projects = [
-      {
-        id: 'grounded', tag: 'Retrieval / evaluation', name: 'Grounded<br>Support', summary: 'A RAG customer service system', meta: '8 knowledge docs · 35 chunks · 20 tests',
-        label: 'Project 01 / RAG customer service system', title: 'Grounded support',
-        actions: [
-          { label: 'Open live product ↗', href: 'https://jewelry0908.github.io/rag-customer-service-portfolio/', primary: true, external: true },
-          { label: 'View source code ↗', href: 'https://github.com/jewelry0908/rag-customer-service-portfolio', external: true }
-        ],
-        statement: 'The knowledge base—not the model—is the source of truth for every service answer.',
-        context: 'Rule-heavy education consultation requires answers that can be verified, updated and safely withheld. The prototype turns separate course, pricing, refund and service rules into one governed support experience.',
-        accessNote: 'Public prototype uses synthetic consultation content. The live product and source code are available for review.',
-        role: 'Product strategy, RAG system design, evaluation and delivery.',
-        status: 'Public prototype · core RAG path verified.',
-        privacy: 'Synthetic domain content · no customer or production data.',
-        details: [
-          { eyebrow: '01 / PRD', title: 'Set a service boundary', body: 'Knowledge gaps, payments, personal data and complaints do not fall through to a fluent answer: the product refuses or hands off when the evidence is insufficient or risk is high.' },
-          { eyebrow: '02 / PROTOTYPE', title: 'Make evidence visible', body: 'Each response is paired with source cards, allowing a visitor to inspect the supporting material instead of accepting an unsupported answer.' },
-          { eyebrow: '03 / SYSTEM', title: 'Separate retrieval from generation', body: 'A managed baseline validated the approach before the implemented path connected governed Markdown sources, embeddings, pgvector retrieval, an edge API and controlled generation.' },
-          { eyebrow: '04 / EVALUATION', title: 'Test behaviour, not fluency', body: 'Fixed cases cover facts, rephrases, no-answer, privacy, complaints and prompt injection. Retrieval quality and final-answer behaviour are assessed separately.' },
-          { eyebrow: '05 / NEXT STEP', title: 'Improve answer-level ranking', body: 'Raise the decisive passage when the correct document is retrieved but its best answer is not yet ranked first.', next: true }
-        ],
-        case: {
-          prd: {
-            title: 'Make business facts govern the answer',
-            intro: 'The service problem was not answering more questions. It was knowing when an answer was sufficiently evidenced to be safe.',
-            copy: 'Course, pricing, refund and service rules were distributed across separate materials. I defined the knowledge base as the only business source of truth, then specified explicit stop conditions for missing knowledge, privacy, payment and complaint scenarios.',
-            points: ['Answer only from governed source material and show the supporting source.', 'Treat no-answer, refusal and human handoff as designed service outcomes.', 'Keep changeable business rules outside model memory so they can be updated and reviewed.']
-          },
-          prototype: {
-            title: 'Expose evidence and exit paths',
-            lead: 'The public interaction makes the product boundary visible, not just the answer text.',
-            signals: [
-              { title: 'Source cards', copy: 'A visitor can inspect the material behind a factual response.' },
-              { title: 'No-answer state', copy: 'Insufficient evidence closes the answer path instead of filling gaps.' },
-              { title: 'Safe handoff', copy: 'Privacy, transaction and complaint cases return to human support.' },
-              { title: 'Public sandbox', copy: 'Synthetic consultation content keeps the prototype reviewable.' }
-            ]
-          },
-          workflow: {
-            title: 'Separate retrieval from generation',
-            steps: ['Safety screen', 'Query embedding', 'Top-K evidence', 'Controlled answer', 'Citation or handoff']
-          },
-          evaluation: {
-            title: 'Validate failure modes, not fluent output',
-            items: [
-              { value: '8', label: 'Knowledge domains', copy: 'Business materials structured as governed source content.' },
-              { value: '35', label: 'Semantic chunks', copy: 'Independent, retrievable units rather than whole documents.' },
-              { value: 'Top-1', label: 'Direct-answer ranking', copy: 'Target passage restored after knowledge-structure tuning.' }
-            ]
-          },
-          next: {
-            title: 'Strengthen answer-level retrieval',
-            copy: 'Continue improving the ranking of the decisive passage when the correct document is retrieved but its clearest answer is not yet first.'
-          }
-        }
-      },
-      {
-        id: 'pindoudou', tag: 'Inventory / recognition', name: 'Pindoudou', summary: 'AI-assisted material management', meta: 'Material intake · review flow · records',
-        label: 'Project 02 / AI-assisted material management', title: 'Pindoudou',
-        actions: [
-          { label: 'Request walkthrough ↗', href: 'mailto:Justin.wu0908@hotmail.com?subject=Pindoudou%20walkthrough%20request', primary: true }
-        ],
-        statement: 'Every inventory change should be explainable through the project that caused it.',
-        context: 'Creators manage projects, colour variants and changing material quantities at the same time. The system joins project planning, inventory and movement history into one traceable operating model.',
-        accessNote: 'The mini program is available in WeChat by searching “宝宝豆拼豆工坊”. Public QR and Figma access will be added only after their sharing scope is confirmed.',
-        role: 'Product strategy, business modelling, IA, prototype and AI-boundary design.',
-        status: 'Core business journey implemented · AI is a controlled experiment.',
-        privacy: 'De-identified public view · no source files or private operations data.',
-        details: [
-          { eyebrow: '01 / PRD', title: 'Let projects drive the ledger', body: 'A project is the business source of every material change—not a record kept beside the warehouse. Taxonomy, permissions and records follow that single operating rule.' },
-          { eyebrow: '02 / PROTOTYPE', title: 'Keep AI editable', body: 'Project creation, quantity changes, stock search, low-stock actions and movement history are implemented. Recognition results remain editable drafts before they can affect a record.' },
-          { eyebrow: '03 / SYSTEM', title: 'Close the data loop', body: 'Project, inventory, movement ledger and AI-experiment records share one model. Adjustments apply only the delta and retain an auditable reason for the change.' },
-          { eyebrow: '04 / EVALUATION', title: 'Check cross-module consistency', body: 'Acceptance follows data from project edits through warehouse updates to ledger history. AI input quality is judged before a person confirms the candidate data.' },
-          { eyebrow: '05 / NEXT STEP', title: 'Validate the public entry points', body: 'Publish the reviewed QR and prototype route, then continue testing recognition without allowing AI to write directly to the inventory ledger.', next: true }
-        ],
-        case: {
-          prd: {
-            title: 'Turn inventory into a creator operating model',
-            intro: 'An inventory total only answers what remains. A creator needs to know which work changed it, why it changed and what action follows.',
-            copy: 'I framed the product around a single business relationship: a project creates the reason for material movement. Project planning, colour specifications, inventory and the movement ledger therefore operate as one model rather than parallel records.',
-            points: ['Use a project as the business origin for material demand and change.', 'Apply quantity deltas instead of recreating an entire record on every edit.', 'Make the ledger an explanation layer for anomalies, replenishment and correction.']
-          },
-          prototype: {
-            title: 'Put review where data becomes official',
-            lead: 'The product reduces creation overhead without making automation the owner of inventory truth.',
-            signals: [
-              { title: 'Project workspace', copy: 'Create a work, maintain colour selections and planned quantities.' },
-              { title: 'Material warehouse', copy: 'Search codes, view stock and act on low-inventory signals.' },
-              { title: 'Movement ledger', copy: 'Trace a quantity back to a project, adjustment, count or replenishment.' },
-              { title: 'AI draft intake', copy: 'Recognition produces an editable candidate before formal project creation.' }
-            ]
-          },
-          workflow: {
-            title: 'Close the project-to-ledger loop',
-            steps: ['Create or import', 'Confirm colour plan', 'Apply quantity delta', 'Write audit trail', 'Refresh operating views']
-          },
-          evaluation: {
-            title: 'Validate consistency across the product',
-            items: [
-              { value: '4', label: 'Operating views', copy: 'Project, warehouse, ledger and personal overview serve distinct decisions.' },
-              { value: 'Delta', label: 'Update rule', copy: 'Only the changed quantity moves, preserving a credible inventory history.' },
-              { value: 'Review', label: 'AI boundary', copy: 'Candidate recognition cannot create a project or change inventory on its own.' }
-            ]
-          },
-          next: {
-            title: 'Validate the public product path',
-            copy: 'Add the reviewed QR and prototype entry points, then continue validating recognition quality without allowing AI to write directly to the inventory ledger.'
-          }
-        }
-      },
-      {
-        id: 'weekly', tag: 'Screenshot / task / risk', name: 'Weekly Report<br>Copilot', summary: 'Multimodal reporting workflow', meta: 'Screenshot parsing · tasks · risk flags',
-        label: 'Project 03 / Multimodal reporting workflow', title: 'Weekly report copilot',
-        actions: [
-          { label: 'Open Dify workflow ↗', href: 'https://udify.app/workflow/NXNByri8EQEo1S49', primary: true, external: true },
-          { label: 'Request W04 input pack ↗', href: 'mailto:Justin.wu0908@hotmail.com?subject=W04%20synthetic%20input%20pack%20request' }
-        ],
-        statement: 'Separate what the system sees, what a manager confirms and what a client report may say.',
-        context: 'The workflow turns fragmented execution signals into a reviewable weekly-report draft. It reconstructs facts from synthetic project and functional screenshots before rules identify risks and a model produces the narrative.',
-        accessNote: 'The public Dify workflow has limited capacity. W04 is a fully synthetic five-source input set; its self-service download will be added with the public asset pack.',
-        role: 'Business modelling, workflow design, rules, human confirmation, evaluation and iteration.',
-        status: 'Public runnable PoC · workflow in active iteration.',
-        privacy: 'Fully synthetic data · no company, client, personnel or production-system inputs.',
-        details: [
-          { eyebrow: '01 / PRD', title: 'Control fact production', body: 'Raw screenshots become structured records, then confirmed facts, rule-derived risks and finally a reviewable report draft. Each layer has a distinct audience and permission boundary.' },
-          { eyebrow: '02 / PROTOTYPE', title: 'Put uncertainty in the review queue', body: 'Conflicts, missing fields and unresolved items are visible before generation. The final report remains a human-reviewed draft—not an automatic external communication.' },
-          { eyebrow: '03 / WORKFLOW', title: 'Gate model output with rules', body: 'Vision extraction and schema normalisation pass through human confirmation. Only Confirmed JSON reaches deterministic risk rules, the filtered fact pack and report generation.' },
-          { eyebrow: '04 / EVALUATION', title: 'Use W04 as a test signal', body: 'The synthetic W04 pack covers project-system, planning, programming, UI/art/motion and QA sources, including intentional conflicts, blockers, dependencies and missing-date signals.' },
-          { eyebrow: '05 / NEXT STEP', title: 'Publish a safe sample path', body: 'Add the self-service W04 pack and extend regression coverage while preserving the rule that unconfirmed internal remarks never enter a client-facing report.', next: true }
-        ],
-        case: {
-          prd: {
-            title: 'Treat weekly reporting as governed fact production',
-            intro: 'The highest-risk step is not generating prose. It is deciding which fragments of project information are credible enough to become an external statement.',
-            copy: 'I modelled reporting as four distinct layers: raw source signals, structured records, manager-confirmed facts and rule-derived risk. The report generator receives only the filtered fact pack; it cannot turn a visual guess or internal note into a client claim.',
-            points: ['Preserve the source behind every extracted task and flag uncertainty instead of hiding it.', 'Use deterministic rules for dates, blockers, conflicts, missing fields and carry-over risk.', 'Reserve business interpretation, confirmation and external release for the project manager.']
-          },
-          prototype: {
-            title: 'Make uncertainty a review task',
-            lead: 'The experience is designed to surface what needs a manager, rather than asking a model to decide on the manager\'s behalf.',
-            signals: [
-              { title: 'Source conflict', copy: 'Incompatible updates remain side by side until a person chooses the fact.' },
-              { title: 'Missing field', copy: 'Absent dates or states are marked for confirmation instead of inferred.' },
-              { title: 'Risk signal', copy: 'Rules highlight delay, blocker, dependency and carry-over patterns.' },
-              { title: 'Publishable draft', copy: 'The narrative is built only after facts are confirmed and filtered.' }
-            ]
-          },
-          workflow: {
-            title: 'Build a firewall between screenshots and reporting',
-            steps: ['Five-source input', 'Vision and schema', 'Normalized records', 'Human confirmation', 'Rules and fact pack', 'Report draft']
-          },
-          evaluation: {
-            title: 'Use W04 to test the weak links',
-            items: [
-              { value: '5', label: 'Input sources', copy: 'Project system, planning, programming, UI/art/motion and QA are intentionally different.' },
-              { value: '2', label: 'Workflow gates', copy: 'Extraction and report generation are separated by confirmed structured data.' },
-              { value: '0', label: 'Automatic external sends', copy: 'A report stays a reviewed draft; unconfirmed items never become external facts.' }
-            ]
-          },
-          next: {
-            title: 'Open a safe public sample path',
-            copy: 'Publish the W04 synthetic source pack alongside the Dify workflow, then extend regression coverage while preserving the confirmation gate for all external reporting.'
-          }
-        }
-      }
-    ];
-    const curatedProjects = [
-      {
-        id: 'rag',
-        tag: 'RETRIEVAL / EVALUATION',
-        cardTitleEn: 'RAG CUSTOMER<br>SERVICE SYSTEM',
-        cardTitleZh: 'RAG 智能客服系统',
-        summary: '受治理知识库、可验证检索与安全收敛',
-        meta: '8 类业务资料 · 35 个知识片段 · 固定评测',
-        label: 'RAG CUSTOMER SERVICE SYSTEM',
-        title: { en: 'RAG CUSTOMER SERVICE SYSTEM', zh: 'RAG 智能客服系统' },
-        actions: [
-          { label: '体验在线产品 ↗', href: 'https://jewelry0908.github.io/rag-customer-service-portfolio/', primary: true, external: true }
-        ],
-        statement: '让每一个业务回答都有证据、边界与下一步',
-        context: '在线教育咨询中的课程、价格、退款与服务规则分散在不同资料中。真正的风险不在于能否生成一段流畅回答，而在于答案是否来自当前有效资料，资料不足时是否会停止猜测，以及订单、支付、隐私与投诉能否被安全交还给人工服务。',
-        facts: [
-          { label: '我的角色', value: '产品定义、知识库治理、RAG 链路设计、评测与线上问题定位。' },
-          { label: '产品边界', value: '以可追溯业务事实为前提，明确无答案、拒答与人工接力的服务出口。' },
-          { label: '交付证据', value: '8 类业务资料、35 个可检索片段、固定场景评测与线上回归。' }
-        ],
-        case: {
-          sections: [
-            {
-              kind: 'diagram',
-              kicker: '技术方案',
-              title: '将输入、检索、生成与线上排障拆成可验证的层',
-              lead: '先以托管基线验证知识内容、提示词与评测方法，再把可控链路拆解为资料治理、检索、生成与线上服务四个独立层。这样每一次异常都有明确的排查入口，而不是把不确定性都交给 Prompt。',
-              diagramLabel: '透明 RAG 链路',
-              diagram: `flowchart TB
-  A["业务资料 Markdown"] --> B["清洗、版本化与语义切片"]
-  B --> C["Embedding 向量化"]
-  C --> D["pgvector 向量索引"]
-  E["用户问题"] --> F["Query Embedding"]
-  F --> G["Top-K 相似度检索"]
-  D --> G
-  G --> H["来源片段与元数据"]
-  H --> I["LLM 受控生成"]
-  I --> J["带引用的最终回答"]`,
-              system: [
-                { title: '资料治理', copy: '课程、权益、退款与服务规则以可更新、可追溯的知识资料管理，而非写入模型记忆。' },
-                { title: '检索可见', copy: '切片、向量、Top-K 与来源元数据彼此独立检查，检索命中不等同于最终回答正确。' },
-                { title: '生成受控', copy: '最终回答建立在可回溯证据上，资料不足时结束生成而不是用语言流畅度覆盖不确定性。' },
-                { title: '线上排障', copy: '一次中文请求异常中，逐层比对输入、查询向量、召回与最终生成，定位编码差异后完成回归修复。' }
-              ]
-            },
-            {
-              kind: 'narrative',
-              kicker: '产品判断与体验机制',
-              title: '不是让模型知道更多，而是让业务事实可管理',
-              lead: '这是一个面向规则密集型服务场景的可信知识问答系统。受治理知识库、检索、受控生成、来源引用与人工接力共同构成了可验证、可维护的服务边界。',
-              paragraphs: [
-                '知识库被定义为唯一业务事实来源。可变的课程、权益、退款和服务规则不沉淀在模型记忆中，而以具有版本、责任与生效状态的资料管理。',
-                '无答案、拒答和转人工不是异常分支，而是产品能力。涉及个人信息、订单、支付、投诉或超出公开规则的问题，系统停止生成业务结论并把用户带回合适的服务路径。'
-              ],
-              points: [
-                '每一条事实性回答都能回到对应来源，让访客看见答案依据，而不是只看到一段自然语言。',
-                '证据不足时，界面明确说明当前无法依据现有资料给出结论，不用更长的文字掩盖不确定性。',
-                '敏感问题不收集个人信息、不承诺交易结果，也不把聊天入口伪装成人工服务替代品。'
-              ]
-            },
-            {
-              kind: 'diagram',
-              kicker: '安全与服务设计',
-              title: '把拒答与人工接力设计进同一条服务链路',
-              lead: '系统先识别问题是否属于可公开回答的业务咨询，再决定是否进入检索。高风险请求与证据不足的请求都在生成之前收敛。',
-              diagramLabel: '安全边界与服务收敛',
-              diagram: `flowchart TB
-  A["用户问题"] --> B["安全与意图边界识别"]
-  B -->|"隐私 / 交易 / 投诉 / 越权"| C["拒绝收集敏感信息\n引导人工支持"]
-  B -->|"公开业务咨询"| D["Query Embedding"]
-  D --> E["Top-K 证据片段"]
-  E --> F{"证据是否充分"}
-  F -->|"否"| G["无答案收敛\n不进行猜测"]
-  F -->|"是"| H["受控生成"]
-  H --> I["结论、依据与来源"]`,
-              system: [
-                { title: '来源引用', copy: '引用不是技术装饰，而是访客判断答案可信度和业务人员维护资料的共同接口。' },
-                { title: '安全收敛', copy: '高风险请求、无依据请求与服务咨询被区分处理，避免模型越过业务授权。' }
-              ]
-            },
-            {
-              kind: 'evidence',
-              kicker: '评测与交付证据',
-              title: '评测的是行为是否可靠，不是回答是否像人',
-              metrics: [
-                { value: '8', label: '业务知识类别', copy: '课程、权益、退款与服务规则被组织为可治理的事实资料。' },
-                { value: '35', label: '独立知识片段', copy: '便于单独检索、定位与优化，而不是整篇文档参与竞争。' },
-                { value: 'Top-5', label: '目标资料召回', copy: '基础检索测试中，目标资料均进入候选集合。' },
-                { value: 'Top-1', label: '重点答案排序', copy: '通过知识结构优化，使关键问题的直接答案片段进入首位。' }
-              ],
-              notes: [
-                '固定评测覆盖事实问答、改写、多文档、无答案、隐私、投诉与提示注入，避免只在顺滑样例上判断系统表现。',
-                '检索命中与最终回答被分开判断，避免“召回了正确文档”被误认为“已经答对”。',
-                '线上故障通过输入、向量、召回、生成的分层比对定位，修复后以同一批核心场景完成回归。'
-              ]
-            }
-          ]
-        }
-      },
-      {
-        id: 'baobaodou',
-        tag: 'INVENTORY / RECOGNITION',
-        cardTitleEn: 'BAOBAODOU<br>BEAD WORKSHOP',
-        cardTitleZh: '宝宝豆拼豆工坊',
-        summary: '项目、库存与流水构成可追溯的创作运营闭环',
-        meta: '项目驱动 · 差量同步 · 受控 AI 识别',
-        label: 'BAOBAODOU BEAD WORKSHOP',
-        title: { en: 'BAOBAODOU BEAD WORKSHOP', zh: '宝宝豆拼豆工坊 / 拼豆豆仓管理小程序' },
-        actions: [
-          { label: '体验交互原型 ↗', href: 'https://www.figma.com/proto/ZMzFF3Kb0VKMPvufW04jgn/%E6%8B%BC%E8%B1%86%E8%B1%86%E4%BB%93%E7%AE%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%C2%B7-UI%E9%AB%98%E4%BF%9D%E7%9C%9F%E5%8E%9F%E5%9E%8B?node-id=0-1&page-id=0%3A1&scaling=scale-down&content-scaling=fixed', primary: true, external: true }
-        ],
-        experience: {
-          kicker: '微信扫码体验',
-          title: '宝宝豆拼豆工坊',
-          copy: '扫码进入小程序，体验项目、仓库与流水围绕同一份材料事实联动的核心路径。',
-          qr: 'assets/baobaodou/mini-program-qr.png',
-          alt: '宝宝豆拼豆工坊微信小程序二维码'
-        },
-        statement: '把“还剩多少”升级为“为什么还剩这些”',
-        context: '当个人创作者同时管理多个作品、色号、用量与库存变化时，库存表只能显示数量，无法解释变化原因。宝宝豆以项目承接创作意图、以库存承接材料资产、以流水解释每一次变化。AI 仅用于降低图纸录入成本，不越过人工确认。',
-        facts: [
-          { label: '我的角色', value: '产品策略、业务建模、交互原型、数据模型、云端链路与 AI 体验设计。' },
-          { label: '体验入口', value: '微信搜索“宝宝豆拼豆工坊”，或进入交互原型体验核心操作路径。' },
-          { label: '工程重点', value: '异步编排、跨页状态同步、补偿回滚、云端额度控制与服务端安全边界。' }
-        ],
-        case: {
-          sections: [
-            {
-              kind: 'diagram',
-              kicker: '技术与数据方案',
-              title: '把“作品 - 材料 - 变动原因”落到同一条数据链',
-              lead: '项目、项目配色、库存、库存流水与 AI 实验记录构成统一数据模型。项目不再是静态收藏卡片，而是每一次材料变化的业务来源；流水也不再是隐藏日志，而是盘点、复盘与找差异的工作台。',
-              diagramLabel: '项目到库存的业务闭环',
-              diagram: `flowchart TB
-  A["创建作品 / 导入图纸"] --> B["确认色号与预计用量"]
-  B --> C["项目配色清单"]
-  C --> D["库存按差量同步"]
-  D --> E["生成可追溯流水"]
-  E --> F["仓库、项目、预警视图刷新"]
-  F --> G["下一次创作决策"]`,
-              system: [
-                { title: '按需加载', copy: '小程序启用组件按需加载，保持多模块体验在移动端的启动与切换效率。' },
-                { title: '异步编排', copy: '前端通过云函数、文件上传与 Promise 流程处理耗时任务，云端以 async/await 编排读写。' },
-                { title: '并发批处理', copy: '批量入库与批量库存调整使用并发任务聚合，减少重复等待与状态分叉。' },
-                { title: '跨页状态同步', copy: '项目、仓库、流水和个人页在写入后标记缓存失效，再按需重新拉取。' },
-                { title: '一致性保护', copy: '多步写入前预检查，部分失败时执行补偿回滚，降低跨集合留下半完成状态的风险。' },
-                { title: '受控额度', copy: 'AI 资格、每日与累计额度、缓存命中和额度消费都由云端事务逻辑控制。' },
-                { title: '服务端安全', copy: '模型密钥不下发前端，临时图片完成处理后清理，客户端只接收必要的候选结果。' }
-              ]
-            },
-            {
-              kind: 'narrative',
-              kicker: '产品判断与体验机制',
-              title: '项目驱动库存，流水负责解释',
-              lead: '产品的核心不是再做一个库存表，而是把创作行为转换成可解释的材料经营数据。',
-              paragraphs: [
-                '项目是库存变化的业务来源。项目创建、配色调整与用量变化会驱动材料台账，而不是让用户在项目和仓库之间重复维护两套事实。',
-                '用量变化只处理差量。增加则扣减，减少则返还，避免重新录入整单导致历史失真。补货、消耗、盘点和批量校准都以流水保留原因。'
-              ],
-              points: [
-                '项目、仓库、流水与个人页分别服务不同决策，避免把所有功能塞进一个入口。',
-                '跨页面修改后按需刷新，减少“项目已改、库存还是旧数”的界面错觉。',
-                '低库存、快改与流水筛选围绕下一次创作决策组织，而不是把数据当作孤立展示。'
-              ]
-            },
-            {
-              kind: 'diagram',
-              kicker: 'AI 体验与确认 Gate',
-              title: '让 AI 降低录入成本，而不成为库存事实的主人',
-              lead: '图纸识别不会直接创建项目，也不会直接改库存。视觉模型只生成可编辑候选清单，用户核对、删除、补充并二次确认后，数据才进入正式项目与库存链路。',
-              diagramLabel: '受控 AI 图纸录入',
-              diagram: `flowchart TB
-  A["上传图纸"] --> B["选择识别模式"]
-  B --> C["视觉模型提取候选色号与数量"]
-  C --> D["匹配本地色库与当前库存"]
-  D --> E["用户核对 / 删除 / 补充"]
-  E --> F["带入新建项目草稿"]
-  F --> G["二次确认后写入正式数据"]`,
-              system: [
-                { title: '候选态', copy: 'AI 输出始终处于可编辑草稿态，未确认前不具备项目与库存写入权限。' },
-                { title: '原型到实现', copy: '用户任务与原型假设先落到真实数据与路由，再根据状态和数据不一致调整交互与云端逻辑并回归核心链路。' }
-              ]
-            },
-            {
-              kind: 'evidence',
-              kicker: '交付与验证证据',
-              title: '验证的不是单页功能，而是跨模块一致性',
-              metrics: [
-                { value: '4', label: '运营视图', copy: '项目、仓库、流水与个人页分工明确，支持不同阶段的创作管理决策。' },
-                { value: 'Delta', label: '更新规则', copy: '项目编辑只同步变化量，保留可信的库存历史与原因链。' },
-                { value: 'Review', label: 'AI 写入边界', copy: '候选数据在用户确认前不具备正式写入权限。' },
-                { value: 'Cloud', label: '关键控制面', copy: '额度、缓存、密钥与临时文件处理统一留在受控云端逻辑。' }
-              ],
-              notes: [
-                '验收沿着项目编辑、库存更新、流水记录和跨页刷新的一条链路进行，而非把每个页面当成孤立功能。',
-                '技术方案把移动端性能、异步任务、一致性保护与 AI 安全边界视为同一套产品交付能力，而非附加实现细节。'
-              ]
-            }
-          ]
-        }
-      },
-      {
-        id: 'copilot',
-        tag: 'SCREENSHOT / TASK / RISK',
-        cardTitleEn: 'DELIVERY INTELLIGENCE<br>COPILOT',
-        cardTitleZh: '交付情报 Copilot',
-        summary: '多源项目状态转化为可审查的周报事实链',
-        meta: 'Vision · Confirmed JSON · 风险规则 · 周报草稿',
-        label: 'DELIVERY INTELLIGENCE COPILOT',
-        title: { en: 'DELIVERY INTELLIGENCE COPILOT', zh: '交付情报 Copilot / 多模态周报自动化系统' },
-        actions: [
-          { label: '打开 Dify Workflow ↗', href: 'https://udify.app/workflow/NXNByri8EQEo1S49', primary: true, external: true },
-          { label: '下载 W04 输入样例包 ↗', href: 'assets/copilot/w04/w04-sample-pack.zip', download: true }
-        ],
-        statement: '让每一条对外周报都建立在可确认的事实之上',
-        context: '项目系统、策划、程序、UI 美术动效与测试信息分散在不同截图和文字信号中。系统的价值不在于把内容写得更快，而在于先区分原始信号、结构化事实、待确认冲突、规则判断与可发布叙事，避免模型把视觉猜测或内部备注直接写进对外周报。',
-        facts: [
-          { label: '我的角色', value: '业务建模、工作流设计、确认机制、风险规则、评测与迭代设计。' },
-          { label: '对外体验', value: '公开 Dify Workflow 演示一条端到端的事实生产与周报草稿链路。' },
-          { label: '验证资产', value: 'W04 合成输入覆盖项目系统、策划、程序、UI 美术动效与测试五类来源。' }
-        ],
-        case: {
-          sections: [
-            {
-              kind: 'diagram',
-              kicker: '端到端工作流',
-              title: '把多源截图变成可审查、可发布的事实包',
-              lead: '访客看到的是一条完整工作流，而非多条实验链路。实验中的拆分用于调整识别和规则；对外演示始终坚持从来源保留到人工确认，再到确定性风险判断和人工审核发布的单链路。',
-              diagramLabel: '公开端到端 Workflow',
-              diagram: `flowchart TB
-  A["多源截图输入"] --> B["Vision 识别"]
-  B --> C["JSON Schema 结构化"]
-  C --> D["字段标准化"]
-  D --> E["跨来源匹配候选"]
-  E --> F["人工确认 Gate"]
-  F --> G["Confirmed JSON"]
-  G --> H["确定性风险规则"]
-  H --> I["Publishable Fact Pack"]
-  I --> J["叙事型周报草稿"]
-  J --> K["人工审核与发布"]`,
-              system: [
-                { title: '来源保留', copy: 'Vision 只提取可见字段并保留来源，不替系统补全缺失日期，也不自行消解状态冲突。' },
-                { title: 'Schema 约束', copy: '识别结果进入 JSON Schema 后再标准化，减少自然语言输入直接驱动后续判断的模糊性。' },
-                { title: '确认 Gate', copy: '只有人工确认后的 Confirmed JSON 才能进入风险规则与对外叙事。' },
-                { title: '规则优先', copy: '延期、未完成、阻塞、冲突、缺失、优先级插入与遗留等信号由确定性规则识别。' }
-              ]
-            },
-            {
-              kind: 'narrative',
-              kicker: '产品判断与迭代',
-              title: '把“系统看见了什么”与“对外能说什么”彻底分开',
-              lead: '周报自动化最难的部分不是生成叙事，而是建立一条不让不确定信息越权的事实生产线。',
-              paragraphs: [
-                '原始截图先变成结构化记录，再变成项目经理确认的事实，随后才允许规则派生风险和模型生成叙事。每一层对应不同的受众、权限与责任。',
-                '工作流从“识别后直接写报告”演进到 Confirmed JSON。确认体验再从严格 JSON 编辑优化为自然语言评论、受限决策解析与代码校验的组合，仍保留无法确认时的待决状态。'
-              ],
-              points: [
-                '“你决定”等未决信息保持未决，不被模型替代为对外结论。',
-                '内部评审备注可以作为 Copilot 的边界测试信号，但未经确认不能进入面向客户的周报。',
-                '周报从任务清单转为固定叙事章节，确保进度、风险、依赖与待确认事项有稳定的表达位置。'
-              ]
-            },
-            {
-              kind: 'diagram',
-              kicker: '事实边界',
-              title: '先确认事实，再允许系统进行判断与叙事',
-              lead: '这一层级把模型能力放在可控位置。它允许系统提升信息处理效率，同时把业务解释权、冲突裁决权与外部发布权留在项目负责人手中。',
-              diagramLabel: '从原始信号到受控叙事',
-              diagram: `flowchart TB
-  A["原始信号\n截图 / 计划 / 遗留"] --> B["结构化事实\n识别、标准化、来源保留"]
-  B --> C["确认事实\n人工确认冲突与缺失"]
-  C --> D["派生判断\n规则识别风险与变化"]
-  D --> E["受控叙事\n周报草稿与审核"]`,
-              system: [
-                { title: 'W04 输入包', copy: '五类合成来源故意包含冲突、阻塞、依赖与日期缺失，用于检验系统能否把不确定性送入确认队列。' },
-                { title: '评测机制', copy: '正常、基线、延期、阻塞、插入、冲突与边界场景分别记录输入、预期事实、输出、根因与回归结果。' }
-              ]
-            },
-            {
-              kind: 'evidence',
-              kicker: '评测与交付证据',
-              title: '评测的是事实边界是否守住，而不只是报告是否通顺',
-              metrics: [
-                { value: '5', label: '输入来源', copy: '项目系统、策划、程序、UI 美术动效和 QA 共同构成 W04 测试输入。' },
-                { value: 'JSON', label: '确认中间层', copy: 'Confirmed JSON 把视觉识别与最终周报之间隔离为可审核的事实层。' },
-                { value: 'Rules', label: '风险判断方式', copy: '延期、阻塞、冲突、缺失与遗留以确定性逻辑识别，不把规则判断交给叙事模型。' },
-                { value: 'Review', label: '发布控制', copy: '输出始终是人工审核的周报草稿，外部发布权不被自动化接管。' }
-              ],
-              notes: [
-                'W04 的价值不是展示五张截图，而是证明系统在多来源、状态冲突、缺失字段和内部备注等压力条件下仍能维持事实边界。',
-                '每次调优都回到明确的预期事实和回归场景，避免用一次看似更流畅的生成结果替代可重复的质量判断。'
-              ],
-              gallery: [
-                { src: 'assets/copilot/w04/w04_project.png', alt: 'W04 项目系统输入', label: '项目系统' },
-                { src: 'assets/copilot/w04/w04_planning.png', alt: 'W04 策划输入', label: '策划' },
-                { src: 'assets/copilot/w04/w04_programming.png', alt: 'W04 程序输入', label: '程序' },
-                { src: 'assets/copilot/w04/w04_art_ui.png', alt: 'W04 UI 美术动效输入', label: 'UI / 美术 / 动效' },
-                { src: 'assets/copilot/w04/w04_qa.png', alt: 'W04 测试输入', label: '测试' }
-              ]
-            }
-          ]
-        }
-      }
-    ];
-    const approvedProjects = [
       {
         id: 'rag',
         cardTagEn: 'AI RAG / TRUSTED SERVICE',
@@ -1907,8 +1545,8 @@
         label: 'DELIVERY INTELLIGENCE COPILOT',
         title: { en: 'DELIVERY INTELLIGENCE COPILOT', zh: '交付情报 Copilot / 多模态周报自动化系统' },
         actions: [
-          { label: '打开 Dify Workflow ↗', href: 'https://udify.app/workflow/NXNByri8EQEo1S49', primary: true, external: true },
-          { label: '下载 W04 输入样例包 ↗', href: 'assets/copilot/w04/w04-sample-pack.zip', download: true }
+          { label: '打开 Dify ↗', href: 'https://udify.app/workflow/NXNByri8EQEo1S49', primary: true, external: true },
+          { label: 'W04 样例包 ↗', href: 'assets/copilot/w04/w04-sample-pack.zip', download: true }
         ],
         statement: '将碎片化项目输入编排为可发布的交付事实',
         context: '交付情报 Copilot 把“看见了什么”与“可以对外说什么”分开处理：先保留输入来源、结构化字段和待确认信息，再由确定性规则识别风险与变化，最终在已确认事实边界内生成叙事型周报。',
@@ -2029,9 +1667,142 @@
             }
           ]
         }
+      },
+      {
+        id: 'ai3d',
+        cardTagEn: 'AI 3D / PRODUCT DESIGN',
+        cardTagZh: 'AI 3D / 产品方案',
+        cardTitleEn: 'AI 3D PROP<br>PIPELINE',
+        cardTitleZh: 'AI 3D 道具生产管线',
+        summaryEn: 'From requirement analysis to acceptance metrics: Hunyuan 3D inside a governable workflow.',
+        summaryZh: '从需求分析到验收指标，把混元 3D 装进可治理的生产流程。',
+        metaEn: 'Requirements · Prompt Engineering · Workflow · Local Deployment',
+        metaZh: '需求分析 · 提示词工程 · 流程搭建 · 本地部署',
+        label: 'AI 3D PROP PIPELINE',
+        title: { en: 'AI 3D PROP PIPELINE', zh: 'AI 3D 道具生产管线 / 混元内网试点方案' },
+        actions: [
+          { label: '预约方案演示 ↗', href: 'mailto:Justin.wu0908@hotmail.com?subject=AI%203D%20Pipeline%20Walkthrough%20Request', primary: true }
+        ],
+        statement: '让 AI 生成的每个道具都可追溯、可审核、可收回',
+        context: '美术团队希望在欧美卡通风格场景道具上验证 AI 提效，但“美术直连 GPU 服务器、把 Gradio 调试地址当生产入口、用公共网盘传文件”三条常见路径，都会绕过权限、审计与风格管理。我负责的方案将混元 Shape 与 Paint 封装为内网生产管线：美术只访问一个 HTTPS 入口，AI 产物默认是草稿，须经人工修型与技术检查方可进入暂存区。',
+        facts: [
+          { label: '产品职责', value: '需求分析、方案设计、提示词工程、流程搭建、混元模型本地部署、验收指标设计。' },
+          { label: '方案原则', value: '美术端零凭据、零权重、零直连；AI 草稿默认不入正式库；下载链接一次性短时有效。' },
+          { label: '验证资产', value: '一期方案：4 周、30 个道具、3 名试点美术；四项量化验收标准与对应记录方式在开工前定义完成。' }
+        ],
+        case: {
+          sections: [
+            {
+              kind: 'narrative',
+              kicker: '项目问题与定位',
+              title: '不是给美术一个新工具，而是给团队一条可治理的生产线',
+              lead: '真正的风险不在于 AI 能否生成一个道具，而在于生成发生在哪、数据流向哪里、结果如何进入正式资产——不受控的“提效”会以数据出域和资产失控为代价。',
+              paragraphs: [
+                '调研中发现三条最常见的“土办法”：美术电脑直连 GPU 服务器、把 Gradio 调试地址当生产入口分发、用公共网盘传输概念图与生成结果。它们各自绕过了权限、审计与风格管理，效率提升的同时把数据边界和资产责任一起让渡了出去。',
+                '因此方案的第一原则是把管线定义为唯一生产入口。美术只访问一个内网 HTTPS 地址；AI 产物默认进入 AI 草稿区，必须经过人工修型与技术检查才能进入暂存区。“不做什么”同样写进方案：一期不做角色、不做自动拓扑、AI 产物不自动入正式库。'
+              ]
+            },
+            {
+              kind: 'diagram',
+              kicker: '流程设计',
+              title: '把生产能力收敛到一个入口，把每一步状态变成界面事实',
+              lead: '流程设计的核心是“收敛”：美术端只暴露一个地址和一组接口，排队、白模确认、下载授权、技术检查全部成为可观察的状态，而不是散落在聊天群和共享盘里的隐式约定。',
+              diagramLabel: '美术端到端生产流程',
+              diagram: `flowchart LR
+  A[概念图 + 结构化制作单] --> B[提交生成任务]
+  B --> C[排队与状态可见]
+  C --> D[白模预览与确认]
+  D -->|不通过| B
+  D -->|确认| E[材质初稿生成]
+  E --> F[DCC 导入 AI 草稿层]
+  F --> G[人工修型]
+  G --> H[自动技术检查]
+  H -->|通过| I[进入暂存区]`
+            },
+            {
+              kind: 'index',
+              kicker: '产品方案索引',
+              title: '六项产品交付物覆盖从需求到验收的完整闭环',
+              rows: [
+                { layer: '需求分析', implementation: '美术生产痛点调研；三条“土办法”路径的风险识别；一期范围与排除项定义', value: '方案对准真实生产问题，而非技术展示。' },
+                { layer: '流程搭建', implementation: '提交、排队、白模确认、材质、导入、修型、检查、暂存的端到端状态机', value: '每一步有明确负责人与系统行为，异常有出口。' },
+                { layer: '提示词工程', implementation: 'euca_v1 风格预设：轮廓、几何、色彩、材质规则与禁止项词表；结构化制作单模板', value: '风格一致性不依赖个人自觉，预设由主美锁定。' },
+                { layer: '模型部署', implementation: '混元 Shape 与 Paint 本地化部署；单 GPU 串行重任务的排队策略', value: '数据不出内网，多人使用不抢显存。' },
+                { layer: '人机边界', implementation: 'AI 草稿态、人工修型、自动检查、暂存区四级隔离', value: 'AI 降低成本但不拥有资产责任。' },
+                { layer: '验收设计', implementation: '初稿可用率、耗时缩短、一次通过率、数据事故四项指标与记录方式', value: '试点结论可由数据支撑，而非主观感受。' }
+              ]
+            },
+            {
+              kind: 'narrative',
+              kicker: '产品判断',
+              title: 'AI 的产物是草稿，不是资产',
+              lead: '方案的核心规则是——AI 可以降低白稿成本，但不能绕过人对资产的最终责任。',
+              paragraphs: [
+                '生成轮廓错误时，流程要求回到参考图与制作单重新开始，而不是在失败网格上继续精修；贴图偏写实则重走材质生成并加强预设禁止项，最终材质仍由人工统一。效率来自减少返工，而不是减少判断。',
+                '试点节奏同样是产品设计的一部分。上线前先由 1 名技术美术 + 1 名场景美术完成端到端试运行，全部通过后才放开 3 人试点组；每周复盘只调整预设与参考图规范，不随意改主流程——让变量可控，让结论可信。'
+              ]
+            },
+            {
+              kind: 'diagram',
+              kicker: '任务状态与异常收敛',
+              title: '每一种任务状态都有明确的美术端表达与系统行为',
+              lead: '任务不只是一条进度条。排队中可取消、白模待确认时只允许生成材质或重新生成、失败保留日志但不保留损坏输出——状态机把“现在能做什么”变成界面事实，把异常处理写进流程而不是交给口头沟通。',
+              diagramLabel: '任务状态机',
+              diagram: `flowchart LR
+  A[QUEUED 排队可取消] --> B[RUNNING 生成中]
+  B --> C[WAITING_REVIEW 白模待确认]
+  C -->|确认| D[SUCCEEDED 短时链接下载]
+  C -->|不通过| A
+  B --> E[FAILED 保留日志 · 附重试建议]
+  A --> F[CANCELLED 释放资源]`
+            },
+            {
+              kind: 'story',
+              kicker: '试点节奏治理',
+              title: '先跑通一个人，再放开一个组',
+              story: [
+                {
+                  label: '场景',
+                  title: '提效压力与失控风险同时存在',
+                  copy: '团队希望尽快验证 AI 道具生产，但一旦走“美术直连模型服务”的最快路径，凭据、权重与文件流向将全部脱离管理。'
+                },
+                {
+                  label: '决策',
+                  title: '不做工具分发，做流程收敛',
+                  copy: '否决“发 Gradio 地址”方案，主张单一入口 + 任务排队 + 审计日志的完整管线；一期明确排除角色、自动拓扑与自动入库，控制验证范围。'
+                },
+                {
+                  label: '动作',
+                  title: '双人端到端试运行作为放量前置条件',
+                  copy: '1 名技术美术 + 1 名场景美术先跑通提交、生成、导入、修型、检查、权限回收全链路；试点期每周 30 分钟复盘，只调整预设与参考图规范。'
+                },
+                {
+                  label: '验证',
+                  title: '用四类记录支撑四项验收',
+                  copy: '美术白模审核记录初稿可用率，制作日志记录耗时变化，自动检查报告记录一次通过率，访问与下载日志记录数据边界。'
+                }
+              ]
+            },
+            {
+              kind: 'evidence',
+              kicker: '验收与量化目标',
+              title: '验收标准在开工之前写好，而不是在复盘时补写',
+              metrics: [
+                { value: '≥70%', label: '初稿可用率目标', copy: '美术白模审核记录，30 个一期道具为分母。' },
+                { value: '≥30%', label: '初稿耗时缩短目标', copy: '制作日志对比原流程，含人工修型时间。' },
+                { value: '≥90%', label: '规范一次通过率目标', copy: '自动检查报告统计，未过检不得入暂存区。' },
+                { value: '0', label: '数据边界事故目标', copy: '美术端无任何长期凭据，访问与下载全程留痕。' }
+              ],
+              notes: [
+                '一期规模：4 周、30 个场景道具、3 名试点美术；验收达标后再决策二期是否扩展资产类型或进行专项风格微调。',
+                '美术端仅 6 个接口动作（创建任务、状态查询、预览、白模确认、下载授权、检查上报），工具形态为 Blender 插件与 Maya Shelf。',
+                '提示词资产（风格预设、禁止项词表、制作单模板）与验收指标是本方案的可复用交付物，可迁移至其他资产类型。'
+              ]
+            }
+          ]
+        }
       }
     ];
-    projects.splice(0, projects.length, ...approvedProjects);
 
     const detailCopy = {
       zh: {
@@ -2194,8 +1965,8 @@
       copilot: {
         title: 'Delivery Intelligence Copilot',
         actions: [
-          { label: 'Open the Dify workflow ↗', href: 'https://udify.app/workflow/NXNByri8EQEo1S49', primary: true, external: true },
-          { label: 'Download the W04 sample pack ↗', href: 'assets/copilot/w04/w04-sample-pack.zip', download: true }
+          { label: 'Open Dify ↗', href: 'https://udify.app/workflow/NXNByri8EQEo1S49', primary: true, external: true },
+          { label: 'W04 sample pack ↗', href: 'assets/copilot/w04/w04-sample-pack.zip', download: true }
         ],
         statement: 'Turn fragmented project inputs into publishable delivery facts',
         context: 'Delivery Intelligence Copilot separates “what was observed” from “what can be said externally”. It preserves sources, structured fields and unresolved items first, then uses deterministic rules to identify risks and changes before producing a narrative weekly report within confirmed-fact boundaries.',
@@ -2261,6 +2032,94 @@
               { src: 'assets/copilot/w04/w04_programming.png', alt: 'W04 engineering input', label: 'Engineering' },
               { src: 'assets/copilot/w04/w04_art_ui.png', alt: 'W04 UI, art and motion input', label: 'UI, art and motion' },
               { src: 'assets/copilot/w04/w04_qa.png', alt: 'W04 QA input', label: 'QA' }
+            ]
+          }
+        ] }
+      },
+      ai3d: {
+        title: 'AI 3D Prop Pipeline',
+        actions: [{ label: 'Request a walkthrough ↗', href: 'mailto:Justin.wu0908@hotmail.com?subject=AI%203D%20Pipeline%20Walkthrough%20Request', primary: true }],
+        statement: 'Make every AI-generated prop traceable, reviewable and revocable',
+        context: 'An art team wanted AI leverage on stylized Western-cartoon props, but the common shortcuts—artists logging into GPU servers, sharing Gradio debug links, moving files through public drives—all bypass permissions, audit and style governance. My design packages Hunyuan Shape and Paint as an in-house production pipeline: artists reach one HTTPS entry point, and AI output is a draft by default, entering the staging area only after human refinement and technical checks.',
+        facts: [
+          { label: 'Product scope', value: 'Requirement analysis, solution design, prompt engineering, workflow building, local model deployment and acceptance-metric design.' },
+          { label: 'Design principles', value: 'Artists hold no credentials, weights or direct connections; AI drafts never enter the formal library by default; download links are one-time and short-lived.' },
+          { label: 'Validation assets', value: 'Phase-one plan: 4 weeks, 30 props, 3 pilot artists; four quantitative acceptance criteria and their logging channels defined before kickoff.' }
+        ],
+        case: { sections: [
+          {
+            kind: 'narrative', kicker: 'Project framing', title: 'Not a new tool for artists, but a governable production line for the studio',
+            lead: 'The real risk is not whether AI can generate a prop, but where generation happens, where the data flows and how results enter the formal library—ungoverned "efficiency" is paid for with data leakage and asset chaos.',
+            paragraphs: [
+              'Research surfaced three common workarounds: artists logging into GPU servers directly, Gradio debug URLs circulated as the production entry, and public drives carrying concept art and outputs. Each bypasses permissions, audit or style governance—trading away data boundaries and asset accountability for speed.',
+              'The design\'s first principle is therefore a single production entrance. Artists reach one in-house HTTPS address; AI output lands in an AI-draft area and reaches staging only after human refinement and technical checks. What the pipeline refuses to do is specified too: no characters, no final auto-topology, no automatic check-in to the formal library in phase one.'
+            ]
+          },
+          {
+            kind: 'diagram', kicker: 'Workflow design', title: 'Converge production to one entrance, turn every step into interface facts',
+            lead: 'The workflow design is about convergence: artists see one address and one set of interfaces, while queuing, shape confirmation, download authorization and technical checks all become observable states—instead of implicit conventions scattered across chat threads and shared drives.',
+            diagramLabel: 'End-to-end artist workflow', diagram: `flowchart LR
+  A[Concept art + structured brief] --> B[Submit generation job]
+  B --> C[Visible queue and status]
+  C --> D[Shape preview and review]
+  D -->|Rejected| B
+  D -->|Approved| E[Material draft generation]
+  E --> F[DCC import to AI_DRAFT layer]
+  F --> G[Human refinement]
+  G --> H[Automated technical checks]
+  H -->|Pass| I[Staging area]`
+          },
+          {
+            kind: 'index', kicker: 'Product deliverables', title: 'Six product deliverables close the loop from requirements to acceptance',
+            rows: [
+              { layer: 'Requirement analysis', implementation: 'Artist pain-point research; risk identification of three workaround paths; phase-one scope and exclusions', value: 'The solution targets real production problems, not technology demos.' },
+              { layer: 'Workflow building', implementation: 'End-to-end state machine: submit, queue, shape review, paint, import, refine, check, stage', value: 'Every step has an explicit owner and system behaviour; exceptions have exits.' },
+              { layer: 'Prompt engineering', implementation: 'euca_v1 style preset: silhouette, geometry, colour, material rules and forbidden-item lists; structured brief template', value: 'Style consistency does not rely on individual discipline; presets are locked by the art lead.' },
+              { layer: 'Model deployment', implementation: 'Local deployment of Hunyuan Shape and Paint; single-GPU serial queue for heavy jobs', value: 'Data never leaves the intranet; concurrent users never fight for VRAM.' },
+              { layer: 'Human-AI boundary', implementation: 'Four-level isolation: AI draft, human refinement, automated checks, staging area', value: 'AI lowers cost but never owns asset responsibility.' },
+              { layer: 'Acceptance design', implementation: 'Four metrics with logging channels: draft usability, time saved, first-pass rate, data incidents', value: 'Pilot conclusions are backed by data, not impressions.' }
+            ]
+          },
+          {
+            kind: 'narrative', kicker: 'Product judgement', title: 'AI output is a draft, not an asset',
+            lead: 'The design\'s core rule—AI may lower the cost of a first draft, but never bypasses human responsibility for the final asset.',
+            paragraphs: [
+              'Wrong silhouettes go back to the reference and brief instead of being patched; painterly drift re-runs material generation with strengthened preset restrictions, and final materials remain human-unified. Efficiency comes from less rework, not less judgement.',
+              'The pilot cadence is part of the product design: a two-person end-to-end dry run gates the three-artist pilot, and weekly reviews tune presets and reference standards only, never the main flow—keeping variables controlled and conclusions credible.'
+            ]
+          },
+          {
+            kind: 'diagram', kicker: 'Task states and exception handling', title: 'Every task state has an explicit artist-facing meaning',
+            lead: 'A task is more than a progress bar. Queued tasks can be cancelled; a white model awaiting review can only proceed to paint or regenerate; failures keep logs with retry suggestions but not corrupted output—the state machine turns "what can I do now" into interface facts.',
+            diagramLabel: 'Task state machine', diagram: `flowchart LR
+  A[QUEUED cancellable] --> B[RUNNING generating]
+  B --> C[WAITING_REVIEW shape approval]
+  C -->|Approved| D[SUCCEEDED short-lived download]
+  C -->|Rejected| A
+  B --> E[FAILED logs kept with retry hint]
+  A --> F[CANCELLED resources released]`
+          },
+          {
+            kind: 'story', kicker: 'Pilot cadence governance', title: 'Prove it with one person before opening it to a group',
+            story: [
+              { label: 'Situation', title: 'Pressure for efficiency coexists with risk of losing control', copy: 'The team wanted to validate AI prop production quickly, but the fastest path—artists connecting directly to model services—would put credentials, weights and file flows entirely outside governance.' },
+              { label: 'Decision', title: 'No tool distribution; workflow convergence instead', copy: 'Rejected the "share a Gradio link" option in favour of a complete pipeline with a single entrance, task queue and audit logs; phase one explicitly excludes characters, auto-topology and automatic check-in to keep validation scoped.' },
+              { label: 'Action', title: 'A two-person dry run as the gate for rollout', copy: 'One technical artist and one environment artist first ran the full chain—submit, generate, import, refine, check, permission revocation; weekly 30-minute reviews during the pilot tune presets and reference standards only.' },
+              { label: 'Validation', title: 'Four logging channels back four acceptance criteria', copy: 'Artist shape reviews record draft usability, production logs record time changes, automated check reports record first-pass rate, and access and download logs record the data boundary.' }
+            ]
+          },
+          {
+            kind: 'evidence', kicker: 'Acceptance and metrics', title: 'Acceptance criteria are written before kickoff, not retrofitted at review',
+            metrics: [
+              { value: '≥70%', label: 'Draft usability target', copy: 'Recorded by artist shape review across 30 phase-one props.' },
+              { value: '≥30%', label: 'Time saved target', copy: 'Production logs compared against the original flow, including human refinement time.' },
+              { value: '≥90%', label: 'First-pass rate target', copy: 'Automated check reports; failing assets cannot enter the staging area.' },
+              { value: '0', label: 'Data incident target', copy: 'No long-lived credentials on artist machines; access and downloads fully logged.' }
+            ],
+            notes: [
+              'Phase-one scale: 4 weeks, 30 stylized props, 3 pilot artists; phase-two decisions—more asset types or style fine-tuning—happen only after acceptance is met.',
+              'Artists use only 6 interface actions (create job, status, preview, shape approval, download authorization, check submission) via a Blender plugin and a Maya shelf tool.',
+              'Prompt assets (style presets, forbidden-item lists, brief templates) and acceptance metrics are reusable deliverables, transferable to other asset types.'
             ]
           }
         ] }
@@ -2532,7 +2391,7 @@
 
     function renderProjectActions(project, ui) {
       const actionArea = document.getElementById('projectModalActions');
-      const actionLabel = label => String(label).replaceAll('↗', '<span class="external-arrow" aria-hidden="true">&#8599;&#65038;</span>');
+      const actionLabel = label => String(label).replace(/↗/g, '<span class="external-arrow" aria-hidden="true">&#8599;&#65038;</span>');
       const actionLinks = project.actions.map(action => `<a class="modal-action${action.primary ? '' : ' modal-action--secondary'}" href="${action.href}"${action.external ? ' target="_blank" rel="noreferrer"' : ''}${action.download ? ' download' : ''}>${actionLabel(action.label)}</a>`).join('');
       actionArea.setAttribute('aria-label', ui.accessLabel);
 
@@ -2639,9 +2498,16 @@
       window.clearTimeout(projectLanguageTimer);
       projectLanguageRestoreObserver?.disconnect();
       projectLanguageRestoreObserver = null;
-      projectOverlay.querySelector('.project-modal').classList.remove('is-language-entering');
+      const modal = projectOverlay.querySelector('.project-modal');
+      modal.classList.remove('is-language-entering');
       renderProjectDetails(true);
       openOverlay(projectOverlay);
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        modal.classList.remove('is-opening');
+        void modal.offsetWidth;
+        modal.classList.add('is-opening');
+        window.setTimeout(() => modal.classList.remove('is-opening'), 900);
+      }
     }
 
     document.querySelectorAll('[data-open-contact]').forEach(button => button.addEventListener('click', () => openOverlay(contactOverlay)));
@@ -2701,8 +2567,8 @@
         else if (projectOverlay.classList.contains('is-open')) closeOverlay(projectOverlay);
         else closeOverlay(contactOverlay);
       }
-      if (event.key === 'ArrowLeft' && !projectOverlay.classList.contains('is-open')) setSelectedProject(selectedProject - 1);
-      if (event.key === 'ArrowRight' && !projectOverlay.classList.contains('is-open')) setSelectedProject(selectedProject + 1);
+      if (event.key === 'ArrowLeft' && !document.querySelector('.overlay.is-open')) setSelectedProject(selectedProject - 1);
+      if (event.key === 'ArrowRight' && !document.querySelector('.overlay.is-open')) setSelectedProject(selectedProject + 1);
     });
     const lineCanvas = document.getElementById('lineField');
     const lineContext = lineCanvas.getContext('2d');
